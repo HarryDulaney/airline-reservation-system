@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Zacks Bus Service</title>
+<th:block th:include="header"></th:block>
+</head>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+	<div class="container">
+  <div class="jumbotron">
+    <h3>Available Buses</h3>
+  </div>
+  <table class="table table-striped">
+			<tr>
+				<th>Id</th>
+				<th>Bus Number</th>
+				<th>Bus Date</th>
+				<th>Bus From</th>
+				<th>Bus To</th>
+			</tr>
+			<tr th:each="c : ${busschedule}">
+				<td th:text="${c.busID}"></td>
+				<td th:text="${c.busNumber}"></td>
+				<td th:text="${c.busDate}"></td>
+				<td th:text="${c.busFrom}"></td>
+				<td th:text="${c.busTo}"></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

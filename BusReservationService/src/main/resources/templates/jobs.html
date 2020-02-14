@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Zacks Bus Service</title>
+<th:block th:include="header"></th:block>
+</head>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+	<div class="container">
+  <div class="jumbotron">
+    <h3>Jobs</h3>
+  </div>
+  <table class="table table-striped">
+			<tr>
+				<th>Id</th>
+				<th>Department_Name</th>
+				<th>Job_Title</th>
+				<th>State</th>
+				<th>City</th>
+				<th>Date_Posted</th>
+				<th>Description</th>
+				
+			</tr>
+			<tr th:each="c : ${JobPostings}">
+				<td th:text="${c.Job_ID}"></td>
+				<td th:text="${c.Department_Name}"></td>
+				<td th:text="${c.Job_Title}"></td>
+				<td th:text="${c.State}"></td>
+				<td th:text="${c.City}"></td>
+				<td th:text="${c.Date_Posted}"></td>
+				<td th:text="${c.Description}"></td>
+				<td><a th:href="'/upload'">Apply</a></td>
+			
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
