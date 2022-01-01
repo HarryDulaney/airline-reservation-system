@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/components :: head(~{::title},~{::link})">
+    <title></title>
+<body>
+<header th:replace="fragments/components :: header"></header>
+<div class="container">
+    <div class="jumbotron">
+        <h3>Flight Schedule (Admin)</h3>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>Flight Id</th>
+            <th>Flight Number</th>
+            <th>Flight Date</th>
+            <th>Origin City</th>
+            <th>Designation City</th>
+            <th>Price $(US Dollars)</th>
+
+        </tr>
+        <tr th:each="f : ${flights}">
+            <td th:text="${f.flightId}"></td>
+            <td th:text="${f.flightNumber}"></td>
+            <td th:text="${f.date}"></td>
+            <td th:text="${f.originCity}"></td>
+            <td th:text="${f.destinationCity}"></td>
+            <td th:text="${f.priceUs}"></td>
+            <td><a th:href="'/busschedule/edit/'  + ${f.flightId}">Edit</a></td>
+            <td><a th:href="'/busschedule/delete/'  + ${f.flightId}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

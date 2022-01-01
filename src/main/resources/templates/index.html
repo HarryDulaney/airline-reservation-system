@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title>Zacks Bus Service</title>
-<th:block th:include="header"></th:block>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/components :: head(~{::title},~{::link})">
+    <title>Title Replacement</title>
 
+</head>
+<header th:replace="fragments/components :: header"></header>
+<body>
 </body>
 </html>

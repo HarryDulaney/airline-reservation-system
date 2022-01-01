@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-<title>Zacks Bus</title>
+<title>Available Flights</title>
 <th:block th:include="header"></th:block>
 </head>
 <link rel="stylesheet"
@@ -11,17 +11,17 @@
 <body>
 	<div class="container">
 		<div class="jumbotron">
-			<h3>Available Buses</h3>
+			<h3>Available Flights</h3>
 		</div>
 		<table class="table table-striped">
 			<tr>
 				<th>Id</th>
-				<th>Bus Number</th>
-				<th>Bus Date</th>
-				<th>Bus From</th>
-				<th>Bus To</th>
+				<th>Flight Number</th>
+				<th>Flight Date</th>
+				<th>Flight From</th>
+				<th>Flight To</th>
 				<th>Price</th>
-				<th>Add Bus To Account</th>
+				<th>Add Flight To Account</th>
 
 			</tr>
 			<tr th:each="c : ${busschedule}">
