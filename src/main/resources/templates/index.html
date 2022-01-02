@@ -6,8 +6,8 @@
 </head>
 <header th:replace="fragments/components :: header"></header>
 <body>
-<h4>Welcome:</h4>
-<p th:text="${user.getFullName()}!"></p>
+<h4>Login with link below:</h4>
+<a th:href="/oauth2/authorization/okta">Click here to Login</a>
 
 </body>
 </html>
