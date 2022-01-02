@@ -6,5 +6,8 @@
 </head>
 <header th:replace="fragments/components :: header"></header>
 <body>
+<h4>Welcome:</h4>
+<p th:text="${user.getFullName()}!"></p>
+
 </body>
 </html>
