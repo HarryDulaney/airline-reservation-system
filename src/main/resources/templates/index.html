@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/components :: head(~{::title},~{::link})">
+<head th:replace="fragments/components :: head(~{::title})">
     <title>Title Replacement</title>
 
 </head>
 <header th:replace="fragments/components :: header"></header>
 <body>
-<h4>Login with link below:</h4>
-<a th:href="/oauth2/authorization/okta">Click here to Login</a>
-
+<h4>Welcome back,<span th:text=" ${user.getFullName()}"></span>
+</h4>
+<footer th:replace="fragments/components :: footer(~{::div})">
+    <div>Footer stuff</div>
+</footer>
 </body>
 </html>

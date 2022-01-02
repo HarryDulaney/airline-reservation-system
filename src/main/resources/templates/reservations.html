@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/components :: head(~{::title},~{::link})">
+<head th:replace="fragments/components :: head(~{::title})">
     <title></title>
 <body>
-<header th:replace="fragments/components :: header"></header><div class="container">
+<header th:replace="fragments/components :: header"></header>
+<div class="container">
     <div class="jumbotron">
         <h3>Your Booked Flights</h3>
     </div>
     <table class="table table-striped">
         <tr>
+            <th>Reservation Number</th>
+
             <th>Flight Id</th>
             <th>Flight Number</th>
             <th>Flight Date</th>
@@ -17,20 +20,22 @@
             <th>Price</th>
         </tr>
         <tr th:each="f : ${flightReservations}">
+            <td th:text="${f.reservationId}"></td>
             <td th:text="${f.flightId}"></td>
             <td th:text="${f.flightNumber}"></td>
-            <td th:text="${f.date}"></td>
+            <td th:text="${f.departureDate}"></td>
             <td th:text="${f.originCity}"></td>
             <td th:text="${f.destinationCity}"></td>
             <td th:text="${f.priceUs}"></td>
-            <td><a th:href="'/reservation/delete/'  + ${f.flightId}">Cancel Booking</a></td>
+            <td><a th:href="'/reservation/delete/'  + ${f.reservationId}">Cancel Booking</a></td>
         </tr>
     </table>
 
 
-<!--    <p th:text=${totalprice}></p>-->
+    <!--    <p th:text=${totalprice}></p>-->
 
 
 </div>
+<footer th:replace="fragments/components :: footer(~{::div})"></footer>
 </body>
 </html>
