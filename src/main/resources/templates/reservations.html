@@ -3,7 +3,7 @@
 <head th:replace="fragments/components :: head(~{::title})">
     <title></title>
 <body>
-<header th:replace="fragments/components :: header"></header>
+<div th:include="fragments/components :: header"></div>
 <div class="container">
     <div class="jumbotron">
         <h3>Your Booked Flights</h3>
@@ -11,7 +11,6 @@
     <table class="table table-striped">
         <tr>
             <th>Reservation Number</th>
-
             <th>Flight Id</th>
             <th>Flight Number</th>
             <th>Flight Date</th>

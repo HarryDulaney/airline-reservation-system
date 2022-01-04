@@ -43,17 +43,9 @@
 //    }
 //
 ////
-////    @GetMapping(path = "/busschedule/delete/{busID}")
-////    public String deleteBus(@PathVariable(name = "busID") long busID) {
-////        flightService.deleteById(busID);
-////        return "redirect:/flightSchedule";
-////    }
+
 //
-//    @GetMapping(path = "/busschedule/edit/{busID}")
-//    public String editBusSchedule(Model model, @PathVariable(value = "busID") long busID) {
-//        model.addAttribute("bus", flightService.findById(busID));
-//        return "edit";
-//    }
+
 //
 //    @PostMapping(path = "/admin/flights/save")
 //    public String saveFlight(FlightEntity flightEntity) {

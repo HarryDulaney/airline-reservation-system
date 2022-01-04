@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,8 +51,22 @@ public class FlightController {
 
     @GetMapping(path = "/reservations")
     public String getUsersReservations(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
-        model.addAttribute("flightReservations", flightService.getUsersReservedFlights(oidcUser.getFullName()));
+        model.addAttribute("flightReservations", flightService.getUsersReservedFlights(oidcUser.getEmail()));
         return "reservations";
+    }
+
+    @GetMapping(path = "/flight-schedule/delete/{id}")
+    public String deleteFlight(@PathVariable(name = "id") Long flightId, Model model) {
+        flightService.deleteFlight(flightId);
+        List<FlightEntity> flights = flightService.getAllFlights();
+        model.addAttribute("flights", flights);
+        return "redirect:/flightSchedule";
+    }
+
+    @GetMapping(path = "/flight-schedule/edit/{id}")
+    public String editFlightSchedule(Model model, @PathVariable(value = "id") Long flightId) {
+        model.addAttribute("flight", flightService.getFlightById(flightId));
+        return "edit";
     }
 
 }

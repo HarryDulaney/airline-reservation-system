@@ -3,7 +3,6 @@ package com.application.entity;
 import com.application.model.FlightReservationLookup;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.persistence.*;
@@ -20,12 +19,11 @@ import javax.persistence.*;
                         "r.reservation_id AS \"reservationId\", " +
                         "r.user_id AS \"userId\" " +
                         "FROM flight_tbl f " +
-                        "INNER JOIN reservations r ON r.flight_id = f.flight_id " +
-                        "WHERE r.user_id = ?1 " +
-                        "ORDER BY f.flight_date ",
+                        "LEFT JOIN reservations r ON r.flight_id = f.flight_id " +
+                        "WHERE r.user_id = ?1 ",
 
                 resultClass = FlightReservationLookup.class,
-                resultSetMapping = "FlightReservationLookupMap"
+                resultSetMapping = "FlightReservationLookupMap1"
         ),
                 @NamedNativeQuery(
                         name = "getAvailableFlightForUser",
@@ -43,7 +41,7 @@ import javax.persistence.*;
                                 "ORDER BY f.flight_date ",
 
                         resultClass = FlightReservationLookup.class,
-                        resultSetMapping = "FlightReservationLookupMap"
+                        resultSetMapping = "FlightReservationLookupMap2"
                 )
 
         }
@@ -51,7 +49,7 @@ import javax.persistence.*;
 
 @SqlResultSetMappings({
         @SqlResultSetMapping(
-                name = "FlightReservationLookupMap",
+                name = "FlightReservationLookupMap1",
                 classes = {
                         @ConstructorResult(targetClass = FlightReservationLookup.class, columns = {
                                 @ColumnResult(name = "flightId", type = Long.class),
@@ -59,7 +57,23 @@ import javax.persistence.*;
                                 @ColumnResult(name = "departureDate", type = Date.class),
                                 @ColumnResult(name = "originCity", type = String.class),
                                 @ColumnResult(name = "destinationCity", type = String.class),
-                                @ColumnResult(name = "priceUs", type = Float.class),
+                                @ColumnResult(name = "priceUs", type = Double.class),
+                                @ColumnResult(name = "reservationId", type = Long.class),
+                                @ColumnResult(name = "userId", type = String.class),
+
+                        })
+                }
+        ),
+        @SqlResultSetMapping(
+                name = "FlightReservationLookupMap2",
+                classes = {
+                        @ConstructorResult(targetClass = FlightReservationLookup.class, columns = {
+                                @ColumnResult(name = "flightId", type = Long.class),
+                                @ColumnResult(name = "flightNumber", type = Long.class),
+                                @ColumnResult(name = "departureDate", type = Date.class),
+                                @ColumnResult(name = "originCity", type = String.class),
+                                @ColumnResult(name = "destinationCity", type = String.class),
+                                @ColumnResult(name = "priceUs", type = Double.class),
                                 @ColumnResult(name = "reservationId", type = Long.class),
                                 @ColumnResult(name = "userId", type = String.class),
 
@@ -79,7 +93,7 @@ public class FlightEntity {
     private Long flightId;
 
     @Column(name = "flight_num")
-    private String flightNumber;
+    private Long flightNumber;
 
     @DateTimeFormat(pattern = "MM/dd/yyyy hh:mm:ss a")
     @Column(name = "flight_date")
@@ -92,26 +106,48 @@ public class FlightEntity {
     private String destinationCity;
 
     @Column(name = "price_us")
-    private BigDecimal priceUs;
+    private Double priceUs;
 
 
     public FlightEntity() {
     }
 
-    public long getFlightId() {
+    public FlightEntity(Long flightId,
+                        Long flightNumber,
+                        Date departureDate,
+                        String originCity,
+                        String destinationCity,
+                        Double priceUs) {
+        this.flightId = flightId;
+        this.flightNumber = flightNumber;
+        this.departureDate = departureDate;
+        this.originCity = originCity;
+        this.destinationCity = destinationCity;
+        this.priceUs = priceUs;
+    }
+
+    public Long getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(long flightId) {
+    public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 
-    public String getFlightNumber() {
+    public Long getFlightNumber() {
         return flightNumber;
     }
 
-    public void setFlightNumber(String flightNumber) {
+    public void setFlightNumber(Long flightNumber) {
         this.flightNumber = flightNumber;
+    }
+
+    public Double getPriceUs() {
+        return priceUs;
+    }
+
+    public void setPriceUs(Double priceUs) {
+        this.priceUs = priceUs;
     }
 
     public Date getDepartureDate() {
@@ -138,11 +174,4 @@ public class FlightEntity {
         this.destinationCity = destinationCity;
     }
 
-    public BigDecimal getPriceUs() {
-        return priceUs;
-    }
-
-    public void setPriceUs(BigDecimal priceUs) {
-        this.priceUs = priceUs;
-    }
 }

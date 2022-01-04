@@ -1,26 +1,27 @@
 package com.application.model;
 
+
 import java.sql.Date;
 
 public class FlightReservationLookup {
     private Long flightId;
-    private String flightNumber;
+    private Long flightNumber;
     private Date departureDate;
     private String originCity;
     private String destinationCity;
-    private Float priceUs;
+    private Double priceUs;
     private Long reservationId;
     private String userId;
 
-    public FlightReservationLookup() {
-    }
+    public FlightReservationLookup() {}
+
 
     public FlightReservationLookup(Long flightId,
-                                   String flightNumber,
+                                   Long flightNumber,
                                    Date departureDate,
                                    String originCity,
                                    String destinationCity,
-                                   Float priceUs,
+                                   Double priceUs,
                                    Long reservationId,
                                    String userId) {
         this.flightId = flightId;
@@ -41,11 +42,11 @@ public class FlightReservationLookup {
         this.flightId = flightId;
     }
 
-    public String getFlightNumber() {
+    public Long getFlightNumber() {
         return flightNumber;
     }
 
-    public void setFlightNumber(String flightNumber) {
+    public void setFlightNumber(Long flightNumber) {
         this.flightNumber = flightNumber;
     }
 
@@ -73,11 +74,11 @@ public class FlightReservationLookup {
         this.destinationCity = destinationCity;
     }
 
-    public Float getPriceUs() {
+    public Double getPriceUs() {
         return priceUs;
     }
 
-    public void setPriceUs(Float priceUs) {
+    public void setPriceUs(Double priceUs) {
         this.priceUs = priceUs;
     }
 

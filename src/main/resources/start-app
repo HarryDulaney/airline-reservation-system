@@ -1,4 +1,0 @@
-mvn spring-boot:run \
-    -Dokta.oauth2.clientId=<client id for oidc app> \
-    -Dokta.oauth2.clientSecret=<client secret for oidc app> \
-    -Dokta.oauth2.issuer=<issuer for oidc app>

@@ -5,30 +5,43 @@
 <body>
 <header th:replace="fragments/components :: header"></header>
 <div class="container">
-    <div class="jumbotron">
-        <h3>Flight Schedule (Admin)</h3>
+    <div class="row">
+        <h3 th:align="center">Master Flight Schedule</h3>
     </div>
     <table class="table table-striped">
-        <tr>
-            <th>Flight Id</th>
-            <th>Flight Number</th>
-            <th>Flight Date</th>
-            <th>Origin City</th>
-            <th>Designation City</th>
-            <th>Price $(US Dollars)</th>
-
+        <thead>
+        <tr class="table-info">
+            <th scope="col">Flight Id</th>
+            <th scope="col">Flight Number</th>
+            <th scope="col">Flight Date</th>
+            <th scope="col">Origin City</th>
+            <th scope="col">Designation City</th>
+            <th scope="col">Price $(US Dollars)</th>
+            <th scope="col">Admin Actions</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="f : ${flights}">
             <td th:text="${f.flightId}"></td>
             <td th:text="${f.flightNumber}"></td>
-            <td th:text="${f.date}"></td>
+            <td th:text="${f.departureDate}"></td>
             <td th:text="${f.originCity}"></td>
             <td th:text="${f.destinationCity}"></td>
             <td th:text="${f.priceUs}"></td>
-            <td><a th:href="'/busschedule/edit/'  + ${f.flightId}">Edit</a></td>
-            <td><a th:href="'/busschedule/delete/'  + ${f.flightId}">Delete</a></td>
+            <td><a class="p-1" th:href="'/flight-schedule/edit/'  + ${f.flightId}">Edit</a>
+                <!--                <form th:action="@{/addFlight}" th:object="${flightToDelete}" method="post">-->
+                <!--                    <input type="hidden" name="flightId" th:value="${empl.id}">-->
+                <!--                    <input type="hidden" name="flightNumber" th:value="${empl.name}">-->
+                <!--                    <input type="hidden" name="telephone" th:value="${empl.telephone}">-->
+                <!--                    <input type="hidden" name="salary" th:value="${empl.salary}">-->
+                <!--                    <button type="submit">Delete</button>-->
+                <!--                </form>-->
+                <a class="p-1" th:href="'/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
         </tr>
+        </tbody>
     </table>
 </div>
+<footer class="mt-5 mb-5" th:replace="fragments/components :: footer">
+</footer>
 </body>
 </html>
