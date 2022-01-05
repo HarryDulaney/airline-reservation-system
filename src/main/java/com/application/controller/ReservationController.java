@@ -19,7 +19,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-
     @GetMapping(path = "/reservation/delete/{id}")
     public String deleteUserReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
                                         @PathVariable(value = "id") Long reservationId) {
@@ -27,5 +26,10 @@ public class ReservationController {
         return "redirect:/reservation";
     }
 
+    @GetMapping(path = "/reservations")
+    public String getUsersReservations(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        model.addAttribute("allReservations", reservationService.getAll(oidcUser.getEmail()));
+        return "reservations";
+    }
 
 }

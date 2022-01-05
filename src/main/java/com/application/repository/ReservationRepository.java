@@ -22,4 +22,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "insert into reservations (user_id,flight_id) VALUES (:userId,:flightId)", nativeQuery = true)
     @Transactional
     Void create(Long userId, Long flightId);
+
+
 }

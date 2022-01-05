@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!-- head component  -->
 <head th:fragment="head(title)">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title th:replace="${title}">Airline Reservation Simulator</title>
-    <!-- include css in the header -->
-    <!--    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>-->
-    <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>-->
+    <title class="card-title text-center" th:replace="${title}">Airline Reservation Simulator</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
+          crossorigin="anonymous">
     <link rel="stylesheet" type="text/css"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -20,24 +19,28 @@
 </head>
 
 <header th:fragment="header">
-    <div class="container text-center">
-        <div style="align-content: center">
-            <div class="jumbotron">
-                <h3>Welcome to Airline Reservation Simulator</h3>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary" style="min-width: 100%;">
+        <a href="#" th:href="@{/}" class="navbar-brand text-white">Simulation Airlines</a>
+        <div class="navbar-collapse collapse show">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{searchFlights/}">Search Available Flights
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/reservations}" class="nav-link">Flight Reservations</a>
+                </li>
 
-                <h4><a href="#" th:href="@{/}">Home</a></h4><br><h4>
-                <a th:href="@{/reservations}">View Your Flights</a></h4><h4>
-                <a th:href="@{/availablebusschedule/}">View Available Flights</a></h4>
-                <br>
-                <h4><a th:href="@{/flightSchedule}">Admin: Flight Schedule</a></h4>
-                <h4><a th:href="@{/flightSchedule/add}">Admin: Add New Flight to Schedule</a></h4>
-
-
-            </div>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/admin/flightSchedule}" class="nav-link">Flight Schedule Admin Access</a>
+                </li>
+            </ul>
+            <span class="float-right"><a class="nav-link text-white text-capitalize" target="_blank"
+                                         href="https://github.com/harrydulaney/airline-reservation-system">About</a></span>
         </div>
-    </div>
+    </nav>
 </header>
-<footer th:fragment="footer">
+<div th:fragment="jsScripts">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
             integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
@@ -45,5 +48,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"
+            crossorigin="anonymous"></script>
+
+</div>
+<footer class="align-bottom text-center" th:fragment="footer">
+    <span style="bottom: 0" class="text-center align-bottom"> Footer Links Here</span>
 </footer>
 </html>

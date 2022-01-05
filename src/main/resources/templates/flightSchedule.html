@@ -6,7 +6,7 @@
 <header th:replace="fragments/components :: header"></header>
 <div class="container">
     <div class="row">
-        <h3 th:align="center">Master Flight Schedule</h3>
+        <h3 class="text-center">Master Flight Schedule</h3>
     </div>
     <table class="table table-striped">
         <thead>
@@ -28,7 +28,7 @@
             <td th:text="${f.originCity}"></td>
             <td th:text="${f.destinationCity}"></td>
             <td th:text="${f.priceUs}"></td>
-            <td><a class="p-1" th:href="'/flight-schedule/edit/'  + ${f.flightId}">Edit</a>
+            <td><a class="moduleLabelInPackage p-2" th:href="'/admin/flight-schedule/edit/'  + ${f.flightId}">Edit</a>
                 <!--                <form th:action="@{/addFlight}" th:object="${flightToDelete}" method="post">-->
                 <!--                    <input type="hidden" name="flightId" th:value="${empl.id}">-->
                 <!--                    <input type="hidden" name="flightNumber" th:value="${empl.name}">-->
@@ -36,12 +36,13 @@
                 <!--                    <input type="hidden" name="salary" th:value="${empl.salary}">-->
                 <!--                    <button type="submit">Delete</button>-->
                 <!--                </form>-->
-                <a class="p-1" th:href="'/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
+                <a class="p-2" th:href="'/admin/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
         </tr>
         </tbody>
     </table>
 </div>
-<footer class="mt-5 mb-5" th:replace="fragments/components :: footer">
+<div th:replace="fragments/components :: jsScripts"></div>
+<footer th:replace="fragments/components :: footer">
 </footer>
 </body>
 </html>

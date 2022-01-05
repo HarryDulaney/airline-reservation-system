@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service("reservationService")
+@Service("ReservationService")
 public class ReservationService {
     private ReservationRepository reservationRepository;
 
@@ -24,4 +24,7 @@ public class ReservationService {
         reservation.ifPresent(value -> reservationRepository.delete(value));
     }
 
+//    public List<ReservationLookup> getAvailableFlights(String userId) {
+//        return flightRepository.getAllAvailableFlights(userId);
+//    }
 }

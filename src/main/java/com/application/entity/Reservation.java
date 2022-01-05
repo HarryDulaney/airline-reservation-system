@@ -4,20 +4,24 @@ package com.application.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "reservations")
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_id")
+    @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "flight_id")
+    @Column(name = "flight_id", nullable = false)
     private Long flightId;
+
+    @ManyToOne(optional = false)
+    Flight flight;
 
     public Reservation() {
 
@@ -27,6 +31,14 @@ public class Reservation {
         this.reservationId = reservationId;
         this.userId = userId;
         this.flightId = flightId;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFLight(Flight flight) {
+        this.flight = flight;
     }
 
     public Long getReservationId() {
