@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/components :: head(~{::title})">
-    <title>Find Your Dream Flight</title>
+    <title>Simulation Airlines</title>
 </head>
 <body>
-<header th:replace="fragments/components :: header"></header>
-<div class="container">
-    <h3 class="text-center card-title">Available Flights</h3>
-    <table class="table table-striped">
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container px-5">
+        <a class="navbar-brand" href="#!">Simulation Airlines</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/admin/flightSchedule}" class="nav-link">Edit Flight Schedule</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" target="_blank"
+                                        href="https://github.com/harrydulaney/airline-reservation-system">About</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/reservations}">My Reservations</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Search Available
+                    Flights</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="text-center my-5">
+                <h1 class="display-5 fw-bolder text-white">Check Prices and Book Your Next Flight</h1>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container mt-1"
+     style="background:url('/static/img/airplanes-noise-shape-memory-alloys-1600.jpg') no-repeat center center fixed; ">
+    <table class=" table table-dark table-striped table-borderless">
         <tr>
             <th>Id</th>
             <th>Flight Number</th>
@@ -15,7 +47,7 @@
             <th>Flight From</th>
             <th>Flight To</th>
             <th>Price</th>
-            <th>Add Flight To Account</th>
+            <th>Actions</th>
 
         </tr>
         <tr th:each="flight : ${resultFlights}">
@@ -25,9 +57,17 @@
             <td th:text="${flight.originCity}"></td>
             <td th:text="${flight.destinationCity}"></td>
             <td th:text="${flight.priceUs}"></td>
-            <td><a th:href="'/availablebusschedule/addto/'  + ${flight.flightId}">Add</a></td>
+            <td><a class="text-white text-capitalize" th:href="'/reservation/book/'  + ${flight.flightId}">Book
+                Reservation</a></td>
         </tr>
     </table>
 </div>
+
+<footer class="align-bottom text-center">
+    <span style="bottom: 0" class="text-center align-bottom"> Footer Links Here</span>
+</footer>
+
+<div th:replace="fragments/components :: jsScripts"></div>
+
 </body>
 </html>

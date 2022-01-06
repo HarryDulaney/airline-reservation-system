@@ -24,6 +24,9 @@ public class ReservationService {
         reservation.ifPresent(value -> reservationRepository.delete(value));
     }
 
+    public void bookReservation(String email, Long reservationId) {
+    }
+
 //    public List<ReservationLookup> getAvailableFlights(String userId) {
 //        return flightRepository.getAllAvailableFlights(userId);
 //    }

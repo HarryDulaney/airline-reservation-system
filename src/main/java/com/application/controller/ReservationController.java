@@ -26,6 +26,13 @@ public class ReservationController {
         return "redirect:/reservation";
     }
 
+    @GetMapping(path = "/reservation/book//{id}")
+    public String createReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
+                                    @PathVariable(value = "id") Long reservationId) {
+        reservationService.bookReservation(oidcUser.getEmail(), reservationId);
+        return "redirect:/reservation";
+    }
+
     @GetMapping(path = "/reservations")
     public String getUsersReservations(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         model.addAttribute("allReservations", reservationService.getAll(oidcUser.getEmail()));
