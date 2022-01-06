@@ -1,6 +1,6 @@
-# :airplane: Welcome to Simulation Airlines! :airplane:	
-# - *Flight Reservation System v2.0* -
-#### This project started life as a capstone assignment for my Application Programming II class Junior year in college, but I have gradually continued building onto it over the years. 
+# :airplane: Welcome to [Airline Reservation Simulator](https://airline-res-simulator.herokuapp.com/)! :airplane:	
+
+#### (*Flight Reservation System v2.0*) started life as: [Flight Reservation System](https://github.com/HarryDulaney/Flight-Reservation-System), a capstone assignment for my Application Programming II class Junior year in college, but I have gradually continued building onto it over the years. 
 ## Here's the criteria from the original project:
 ### Primary Goal:
 - Build a flight reservation system from scratch.
