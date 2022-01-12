@@ -18,10 +18,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findReservationsByFlightId(Long flightId);
 
-    @Modifying
-    @Query(value = "insert into reservations (user_id,flight_id) VALUES (:userId,:flightId)", nativeQuery = true)
-    @Transactional
-    Void create(Long userId, Long flightId);
+//    @Transactional
+//    @Modifying
+//    @Query(value = "insert into reservations (user_id,flight_id) VALUES (:userId,:flightId)", nativeQuery = true)
+//    Void create(Long userId, Long flightId);
 
 
 }

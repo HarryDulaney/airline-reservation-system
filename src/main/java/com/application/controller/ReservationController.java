@@ -1,6 +1,7 @@
 package com.application.controller;
 
 
+import com.application.entity.Reservation;
 import com.application.service.ReservationService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -26,10 +27,11 @@ public class ReservationController {
         return "redirect:/reservation";
     }
 
-    @GetMapping(path = "/reservation/book//{id}")
+    @GetMapping(path = "/reservation/book/{id}")
     public String createReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
-                                    @PathVariable(value = "id") Long reservationId) {
-        reservationService.bookReservation(oidcUser.getEmail(), reservationId);
+                                    @PathVariable(value = "id") Long flightId) {
+        Reservation reservation = reservationService.bookReservation(oidcUser.getEmail(), flightId);
+        model.addAttribute("reservation", reservation);
         return "redirect:/reservation";
     }
 

@@ -4,11 +4,14 @@ import com.application.entity.Reservation;
 import com.application.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service("ReservationService")
 public class ReservationService {
+
     private ReservationRepository reservationRepository;
 
     public ReservationService(ReservationRepository reservationRepository) {
@@ -24,7 +27,12 @@ public class ReservationService {
         reservation.ifPresent(value -> reservationRepository.delete(value));
     }
 
-    public void bookReservation(String email, Long reservationId) {
+    @Transactional
+    public Reservation bookReservation(String email, Long flightId) {
+        Reservation reservation = new Reservation();
+        reservation.setFlightId(flightId);
+        reservation.setUserId(email);
+        return reservationRepository.save(reservation);
     }
 
 //    public List<ReservationLookup> getAvailableFlights(String userId) {
