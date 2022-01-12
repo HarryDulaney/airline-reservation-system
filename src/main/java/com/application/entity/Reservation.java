@@ -27,11 +27,16 @@ public class Reservation {
 
     }
 
-    public Reservation(Long reservationId, String userId, Long flightId) {
+    public Reservation(Long reservationId, String userId) {
         this.reservationId = reservationId;
         this.userId = userId;
+    }
+
+    public Reservation(Long reservationId, String userId, Long flightId) {
+        this(reservationId,userId);
         this.flightId = flightId;
     }
+
 
     public Flight getFlight() {
         return flight;

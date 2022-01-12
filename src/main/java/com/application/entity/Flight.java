@@ -1,7 +1,10 @@
 package com.application.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalTime;
 import java.util.Collection;
 
 import javax.persistence.*;
@@ -18,7 +21,7 @@ public class Flight {
     @Column(name = "flight_num")
     private Long flightNumber;
 
-    @Column(name = "flight_date")
+    @Column(name = "departure_date")
     private Date departureDate;
 
     @Column(name = "origin")
@@ -29,6 +32,17 @@ public class Flight {
 
     @Column(name = "price_us")
     private BigDecimal priceUs;
+
+    @Column(name = "carrier", length = 40)
+    private String carrier;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column(name = "departure_time")
+    private LocalTime departureTime;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column(name = "arrival_time")
+    private LocalTime arrivalTime;
 
     @OneToMany(mappedBy = "flight")
     private Collection<Reservation> reservations;
@@ -41,18 +55,50 @@ public class Flight {
                   Date departureDate,
                   String originCity,
                   String destinationCity,
-                  BigDecimal priceUs) {
+                  BigDecimal priceUs,
+                  String carrier,
+                  LocalTime departureTime,
+                  LocalTime arrivalTime) {
         this.flightId = flightId;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
         this.originCity = originCity;
         this.destinationCity = destinationCity;
         this.priceUs = priceUs;
+        this.carrier = carrier;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
     }
 
     public Collection<Reservation> getReservations() {
         return reservations;
     }
+
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public LocalTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getCarrier() {
+        return carrier;
+    }
+
+    public void setCarrier(String carrier) {
+        this.carrier = carrier;
+    }
+
 
     public void setReservations(Collection<Reservation> reservations) {
         this.reservations = reservations;
@@ -104,5 +150,19 @@ public class Flight {
 
     public void setPriceUs(BigDecimal priceUs) {
         this.priceUs = priceUs;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "flightId = " + flightId + ", " +
+                "flightNumber = " + flightNumber + ", " +
+                "departureDate = " + departureDate + ", " +
+                "originCity = " + originCity + ", " +
+                "destinationCity = " + destinationCity + ", " +
+                "priceUs = " + priceUs + ", " +
+                "carrier = " + carrier + ", " +
+                "departureTime = " + departureTime + ", " +
+                "arrivalTime = " + arrivalTime + ")";
     }
 }
