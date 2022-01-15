@@ -3,6 +3,7 @@ package com.application.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Entity
@@ -10,9 +11,9 @@ import java.util.Objects;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "reservation_id", nullable = false)
-    private Long reservationId;
+    private UUID reservationId;
 
     @Column(name = "user_id", nullable = false)
     private String userId;
@@ -27,13 +28,13 @@ public class Reservation {
 
     }
 
-    public Reservation(Long reservationId, String userId) {
+    public Reservation(UUID reservationId, String userId) {
         this.reservationId = reservationId;
         this.userId = userId;
     }
 
-    public Reservation(Long reservationId, String userId, Long flightId) {
-        this(reservationId,userId);
+    public Reservation(UUID reservationId, String userId, Long flightId) {
+        this(reservationId, userId);
         this.flightId = flightId;
     }
 
@@ -46,11 +47,11 @@ public class Reservation {
         this.flight = flight;
     }
 
-    public Long getReservationId() {
+    public UUID getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(Long reservationId) {
+    public void setReservationId(UUID reservationId) {
         this.reservationId = reservationId;
     }
 
