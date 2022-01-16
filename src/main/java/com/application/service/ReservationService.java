@@ -4,7 +4,6 @@ import com.application.entity.Reservation;
 import com.application.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setFlightId(flightId);
         reservation.setUserId(email);
-        return reservationRepository.save(reservation);
+        return reservationRepository.saveAndFlush(reservation);
     }
 
 //    public List<ReservationLookup> getAvailableFlights(String userId) {

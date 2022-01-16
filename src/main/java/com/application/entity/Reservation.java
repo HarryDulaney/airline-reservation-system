@@ -1,8 +1,8 @@
 package com.application.entity;
 
-
 import javax.persistence.*;
 import java.util.Objects;
+import java.lang.Long;
 
 
 @Entity
@@ -20,7 +20,8 @@ public class Reservation {
     @Column(name = "flight_id", nullable = false)
     private Long flightId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", referencedColumnName = "flight_id", insertable = false, updatable = false)
     Flight flight;
 
     public Reservation() {
@@ -33,7 +34,7 @@ public class Reservation {
     }
 
     public Reservation(Long reservationId, String userId, Long flightId) {
-        this(reservationId,userId);
+        this(reservationId, userId);
         this.flightId = flightId;
     }
 

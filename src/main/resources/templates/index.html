@@ -9,9 +9,9 @@
 <body>
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-5">
+    <div class="container">
         <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse flex-grow-0" id="navbarSupportedContent">
+        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0" style="margin-right: 8rem"
                 th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
                 <!-------------------------------------  Signed In ---------------------------------------------->
@@ -28,9 +28,9 @@
                         <a class="dropdown-item" href="#">Admin Actions</a>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/reservations}">My Trips</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{searchFlights/}">Book</a></li>
-                <li class="nav-item"><a class="nav-link" target="_blank"
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{/reservations}">My Trips</a></li>
+                <li class="nav-item"><a class="nav-link text-white" th:href="@{searchFlights/}">Book</a></li>
+                <li class="nav-item"><a class="nav-link text-white" target="_blank"
                                         href="https://github.com/harrydulaney/airline-reservation-system">About</a></li>
             </ul>
 
@@ -39,18 +39,18 @@
                 <!------------------------------------- Not Signed In ---------------------------------------------->
                 <li class="nav-item disabled"><a class="nav-link disabled" href="#!" th:disabled>My Trips</a></li>
                 <li class="nav-item disabled"><a class="nav-link disabled" href="#!" th:disabled>Book</a></li>
-                <li class="nav-item"><a class="nav-link" target="_blank"
+                <li class="nav-item"><a class="nav-link text-white" target="_blank"
                                         href="https://github.com/harrydulaney/airline-reservation-system">About</a></li>
             </ul>
             <div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
                 <!-------------------------------------  Signed In ---------------------------------------------->
                 <form method="post" th:action="@{/logout}"
-                      class="float-right" style="margin-left: 5rem">
+                      class="float-right" style="margin-left: 6rem">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <button id="logout-button" type="submit" class="btn btn-outline-primary">Sign Out</button>
                 </form>
             </div>
-            <div style="display:inline-flex;margin-left: 5rem" class="float-right"
+            <div style="margin-left: 5rem;float: end" class="d-inline-flex justify-content-end"
                  th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
                 <!------------------------------------- Not Signed In ---------------------------------------------->
                 <form method="get" th:action="@{/oauth2/authorization/okta}">
@@ -59,7 +59,7 @@
                     </button>
                 </form>
                 <!--/* If the user is Not logged in show the Register redirect button */-->
-                <form method="get" th:action="@{/#}">
+                <form method="get" th:action="@{/register}">
                     <button id="register-button" class="btn btn-outline-primary" style="margin-left: 0.5rem"
                             type="submit">
                         Register
@@ -76,14 +76,16 @@
             <div class="col-lg-6">
                 <div class="text-center my-5">
                     <div th:if="${#authorization.expression('isAuthenticated()')}">
-                        <h1 class="display-5 fw-bolder text-white mb-2">Welcome back to Simulation Airlines,<br>
+                        <h1 class="display-5 fw-bolder text-white mb-2">Welcome back,<br>
                             <span th:text="${user.getFullName()}"></span></h1>
-                        <p class="lead text-white-50 mb-4">Thank you for choosing Simulation for your premium Air travel
+                        <p class="lead text-white-50 mb-4">Thank you for choosing Simulation for your premium air travel
                             needs,
                             How can we help you today?</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Search Available Flights</a>
-                            <a class="btn btn-outline-light btn-lg px-4" href="#!">View Your Reservations</a>
+                            <a class="btn btn-primary btn-lg px-4 me-sm-3" th:href="@{/searchFlights}">Search Available
+                                Flights</a>
+                            <a class="btn btn-outline-light btn-lg px-4" th:href="@{/reservations}">View Your
+                                Reservations</a>
                         </div>
                     </div>
 
@@ -98,7 +100,12 @@
                                     In
                                 </button>
                             </form>
-                            <a class="btn btn-outline-primary text-white btn-lg px-4 ml-1" href="#!">Register</a>
+                            <form method="get" th:action="@{/register}">
+                                <button id="register-button2"
+                                        class="btn btn-outline-primary text-white btn-lg px-4 ml-1"
+                                        type="submit">Register
+                                </button>
+                            </form>
                         </div>
                     </div>
 
@@ -116,8 +123,7 @@
                 <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i>
                 </div>
                 <h2 class="h4 fw-bolder">Frequently Asked Questions</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence
-                    and probably just keep going until we run out of words.</p>
+                <p>Answers to commonly asked questions...</p>
                 <a class="text-decoration-none" href="#!">
                     FAQs
                     <i class="bi bi-arrow-right"></i>
@@ -127,8 +133,7 @@
                 <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i>
                 </div>
                 <h2 class="h4 fw-bolder">The Simulations Airlines Difference</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence
-                    and probably just keep going until we run out of words.</p>
+                <p>Fly with us</p>
                 <a class="text-decoration-none" href="#!">
                     What makes us different?
                     <i class="bi bi-arrow-right"></i>
@@ -138,8 +143,7 @@
                 <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i>
                 </div>
                 <h2 class="h4 fw-bolder">We're Hiring!</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence
-                    and probably just keep going until we run out of words.</p>
+                <p>Job opportunities in the air and on the ground</p>
                 <a class="text-decoration-none" href="#!">
                     Join the simulation!
                     <i class="bi bi-arrow-right"></i>
@@ -152,163 +156,136 @@
 <section class="bg-light py-5 border-bottom">
     <div class="container px-5 my-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bolder">Pay as you grow</h2>
-            <p class="lead mb-0">With our no hassle pricing plans</p>
+            <h2 class="fw-bolder">Register your user account</h2>
+            <p class="lead mb-0">To gain major functionality</p>
         </div>
         <div class="row gx-5 justify-content-center">
-            <!-- Pricing card free-->
             <div class="col-lg-6 col-xl-4">
                 <div class="card mb-5 mb-xl-0">
                     <div class="card-body p-5">
-                        <div class="small text-uppercase fw-bold text-muted">Free</div>
+                        <div class="text-uppercase fw-bold text-muted"><strong>User Account</strong></div>
                         <div class="mb-3">
-                            <span class="display-4 fw-bold">$0</span>
-                            <span class="text-muted">/ mo.</span>
+                            <span class="display-4 fw-bold">Free</span>
                         </div>
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>1 users</strong>
+                                <strong>Manager your booked flights</strong>
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                5GB storage
+                                Search and book new flights
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
+                                Get access to My Trips
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Community access
+                                Edit existing bookings and flights
                             </li>
-                            <li class="mb-2 text-muted">
-                                <i class="bi bi-x"></i>
-                                Unlimited private projects
-                            </li>
-                            <li class="mb-2 text-muted">
-                                <i class="bi bi-x"></i>
-                                Dedicated support
-                            </li>
-                            <li class="mb-2 text-muted">
-                                <i class="bi bi-x"></i>
-                                Free linked domain
-                            </li>
-                            <li class="text-muted">
-                                <i class="bi bi-x"></i>
-                                Monthly status reports
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Only one account per email address</strong>
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
+                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Register User Account</a></div>
                     </div>
                 </div>
             </div>
-            <!-- Pricing card pro-->
-            <div class="col-lg-6 col-xl-4">
-                <div class="card mb-5 mb-xl-0">
-                    <div class="card-body p-5">
-                        <div class="small text-uppercase fw-bold">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            Pro
-                        </div>
-                        <div class="mb-3">
-                            <span class="display-4 fw-bold">$9</span>
-                            <span class="text-muted">/ mo.</span>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                <strong>5 users</strong>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                5GB storage
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Community access
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Unlimited private projects
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Dedicated support
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Free linked domain
-                            </li>
-                            <li class="text-muted">
-                                <i class="bi bi-x"></i>
-                                Monthly status reports
-                            </li>
-                        </ul>
-                        <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Pricing card enterprise-->
+
             <div class="col-lg-6 col-xl-4">
                 <div class="card">
                     <div class="card-body p-5">
-                        <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
+                        <div class="text-uppercase fw-bold text-muted"><strong>Admin Account</strong></div>
                         <div class="mb-3">
-                            <span class="display-4 fw-bold">$49</span>
-                            <span class="text-muted">/ mo.</span>
+                            <span class="display-4 fw-bold">Approval Required</span>
                         </div>
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>Unlimited users</strong>
+                                <strong>Manage Users</strong>
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                5GB storage
+                                Add new flights
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
+                                Edit existing flights
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Community access
+                                Delete existing flights
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited private projects
+                                Update existing flight information
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Dedicated support
+                                Gain insight into your users
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>Unlimited</strong>
-                                linked domains
-                            </li>
-                            <li class="text-muted">
-                                <i class="bi bi-check text-primary"></i>
-                                Monthly status reports
+                                Only one account per Admin
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
+                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Register Admin Account</a>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Anonymous Access</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold" style="font-size: 2.5rem;">Federated sign in via third party provider</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Use a third party SSO provider</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Coming Soon!
+                            </li>
+                            <!--                            <li class="mb-2">-->
+                            <!--                                <i class="bi bi-check text-primary"></i>-->
+                            <!--                                Edit existing flights-->
+                            <!--                            </li>-->
+                            <!--                            <li class="mb-2">-->
+                            <!--                                <i class="bi bi-check text-primary"></i>-->
+                            <!--                                Delete existing flights-->
+                            <!--                            </li>-->
+                            <!--                            <li class="mb-2">-->
+                            <!--                                <i class="bi bi-check text-primary"></i>-->
+                            <!--                                Update existing flight information-->
+                            <!--                            </li>-->
+                            <!--                            <li class="mb-2">-->
+                            <!--                                <i class="bi bi-check text-primary"></i>-->
+                            <!--                                Gain insight into your users-->
+                            <!--                            </li>-->
+                            <!--                            <li class="mb-2">-->
+                            <!--                                <i class="bi bi-check text-primary"></i>-->
+                            <!--                                Only one account per Admin-->
+                            <!--                            </li>-->
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="#!" disabled="">Coming
+                            Soon!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </section>
-<footer class="align-bottom text-center">
-    <span style="bottom: 0" class="text-center align-bottom"> Footer Links Here</span>
-</footer>
-
-
+<footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
 
 </body>

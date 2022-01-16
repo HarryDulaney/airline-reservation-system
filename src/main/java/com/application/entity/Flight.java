@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.lang.Long;
 
 import javax.persistence.*;
 
@@ -44,7 +45,7 @@ public class Flight {
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    @OneToMany(mappedBy = "flight")
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Reservation> reservations;
 
     public Flight() {

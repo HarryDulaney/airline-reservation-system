@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository("ReservationRepository")
@@ -17,11 +17,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Reservation findReservationsByUserIdAndFlightId(String userId, Long flightId);
 
     List<Reservation> findReservationsByFlightId(Long flightId);
-
-//    @Transactional
-//    @Modifying
-//    @Query(value = "insert into reservations (user_id,flight_id) VALUES (:userId,:flightId)", nativeQuery = true)
-//    Void create(Long userId, Long flightId);
-
 
 }
