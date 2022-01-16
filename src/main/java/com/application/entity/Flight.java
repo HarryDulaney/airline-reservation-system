@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.UUID;
+import java.lang.Long;
 
 import javax.persistence.*;
 
@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id")
-    private UUID flightId;
+    private Long flightId;
 
     @Column(name = "flight_num")
     private Long flightNumber;
@@ -45,13 +45,13 @@ public class Flight {
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    @OneToMany(mappedBy = "flight")
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Reservation> reservations;
 
     public Flight() {
     }
 
-    public Flight(UUID flightId,
+    public Flight(Long flightId,
                   Long flightNumber,
                   Date departureDate,
                   String originCity,
@@ -105,11 +105,11 @@ public class Flight {
         this.reservations = reservations;
     }
 
-    public UUID getFlightId() {
+    public Long getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(UUID flightId) {
+    public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 

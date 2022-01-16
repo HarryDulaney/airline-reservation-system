@@ -43,13 +43,14 @@
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
             <div class="text-center my-5">
-                <h1 class="display-5 fw-bolder text-white">Check Prices and Book Your Next Flight</h1>
+                <h1 class="display-5 fw-bolder text-white">Available Flights</h1>
             </div>
         </div>
     </div>
 </header>
-<div class="container mt-1">
-    <table class=" table table-dark table-striped table-borderless">
+<div class="container my-5">
+    <table class="table table-striped">
+        <thead>
         <tr>
             <th>Id</th>
             <th>Flight Number</th>
@@ -60,6 +61,7 @@
             <th>Actions</th>
 
         </tr>
+        </thead>
         <tr th:each="flight : ${resultFlights}">
             <td th:text="${flight.flightId}"></td>
             <td th:text="${flight.flightNumber}"></td>
@@ -67,7 +69,7 @@
             <td th:text="${flight.originCity}"></td>
             <td th:text="${flight.destinationCity}"></td>
             <td th:text="${flight.priceUs}"></td>
-            <td><a class="text-capitalize text-warning" th:href="'/reservation/book/'  + ${flight.flightId}">Book
+            <td><a th:href="'/reservation/book/'  + ${flight.flightId}">Book
                 Reservation</a></td>
         </tr>
     </table>

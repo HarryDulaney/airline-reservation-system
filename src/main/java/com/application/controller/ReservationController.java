@@ -32,7 +32,7 @@ public class ReservationController {
                                     @PathVariable(value = "id") Long flightId) {
         Reservation reservation = reservationService.bookReservation(oidcUser.getEmail(), flightId);
         model.addAttribute("reservation", reservation);
-        return "redirect:/reservation";
+        return "redirect:/reservations";
     }
 
     @GetMapping(path = "/reservations")

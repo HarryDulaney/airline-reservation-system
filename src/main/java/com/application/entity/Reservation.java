@@ -1,9 +1,8 @@
 package com.application.entity;
 
-
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
+import java.lang.Long;
 
 
 @Entity
@@ -11,9 +10,9 @@ import java.util.UUID;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id", nullable = false)
-    private UUID reservationId;
+    private Long reservationId;
 
     @Column(name = "user_id", nullable = false)
     private String userId;
@@ -21,19 +20,20 @@ public class Reservation {
     @Column(name = "flight_id", nullable = false)
     private Long flightId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", referencedColumnName = "flight_id", insertable = false, updatable = false)
     Flight flight;
 
     public Reservation() {
 
     }
 
-    public Reservation(UUID reservationId, String userId) {
+    public Reservation(Long reservationId, String userId) {
         this.reservationId = reservationId;
         this.userId = userId;
     }
 
-    public Reservation(UUID reservationId, String userId, Long flightId) {
+    public Reservation(Long reservationId, String userId, Long flightId) {
         this(reservationId, userId);
         this.flightId = flightId;
     }
@@ -47,11 +47,11 @@ public class Reservation {
         this.flight = flight;
     }
 
-    public UUID getReservationId() {
+    public Long getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(UUID reservationId) {
+    public void setReservationId(Long reservationId) {
         this.reservationId = reservationId;
     }
 
