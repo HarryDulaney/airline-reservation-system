@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.lang.Long;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -20,7 +21,7 @@ public class Flight {
     private Long flightId;
 
     @Column(name = "flight_num")
-    private Long flightNumber;
+    private String flightNumber;
 
     @Column(name = "departure_date")
     private Date departureDate;
@@ -52,7 +53,7 @@ public class Flight {
     }
 
     public Flight(Long flightId,
-                  Long flightNumber,
+                  String flightNumber,
                   Date departureDate,
                   String originCity,
                   String destinationCity,
@@ -113,11 +114,11 @@ public class Flight {
         this.flightId = flightId;
     }
 
-    public Long getFlightNumber() {
+    public String getFlightNumber() {
         return flightNumber;
     }
 
-    public void setFlightNumber(Long flightNumber) {
+    public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
 
@@ -165,5 +166,22 @@ public class Flight {
                 "carrier = " + carrier + ", " +
                 "departureTime = " + departureTime + ", " +
                 "arrivalTime = " + arrivalTime + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return flightId.equals(flight.flightId) && flightNumber.equals(flight.flightNumber) &&
+                departureDate.equals(flight.departureDate) && originCity.equals(flight.originCity) &&
+                destinationCity.equals(flight.destinationCity) && priceUs.equals(flight.priceUs) &&
+                carrier.equals(flight.carrier) && Objects.equals(departureTime, flight.departureTime) &&
+                Objects.equals(arrivalTime, flight.arrivalTime) && Objects.equals(reservations, flight.reservations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flightId, flightNumber, departureDate, originCity, destinationCity, priceUs, carrier, departureTime, arrivalTime, reservations);
     }
 }

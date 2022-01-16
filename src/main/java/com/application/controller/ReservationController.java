@@ -24,7 +24,7 @@ public class ReservationController {
     public String deleteUserReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
                                         @PathVariable(value = "id") Long reservationId) {
         reservationService.cancel(reservationId);
-        return "redirect:/reservation";
+        return "redirect:/reservations";
     }
 
     @GetMapping(path = "/reservation/book/{id}")
