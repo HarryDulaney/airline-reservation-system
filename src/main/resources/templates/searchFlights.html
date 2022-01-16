@@ -7,35 +7,11 @@
 <body>
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-5">
+    <div class="container w-100">
         <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse flex-grow-0" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0" style="margin-right: 8rem">
-                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Admin
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a th:href="@{/admin/flightSchedule}" class="dropdown-item">Edit Flight Schedules</a>
-                        <a class="dropdown-item" href="#">Add Flights</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Admin Actions</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/reservations}">My Trips</a></li>
-                <li class="nav-item"><a class="nav-link active" th:href="@{searchFlights/}">Book</a></li>
-                <li class="nav-item"><a class="nav-link" target="_blank"
-                                        href="https://github.com/harrydulaney/airline-reservation-system">About</a></li>
+        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+            <ul th:replace="fragments/components :: signedIn">
             </ul>
-            <!--/* If the user is logged in, show the logout button */-->
-            <form method="post" th:action="@{/logout}" th:if="${#authorization.expression('isAuthenticated()')}"
-                  class="float-right" style="margin-left: 5rem">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button id="logout-button" type="submit" class="btn btn-outline-primary">Sign Out</button>
-            </form>
-
         </div>
     </div>
 </nav>
@@ -49,31 +25,50 @@
     </div>
 </header>
 <div class="container my-5">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Flight Number</th>
-            <th>Flight Date</th>
-            <th>Flight From</th>
-            <th>Flight To</th>
-            <th>Price</th>
-            <th>Actions</th>
+    <div class="row justify-content-center">
+        <table id="flightTable" class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Flight #</th>
+                <th>Departure Date</th>
+                <th>Airline Carrier</th>
+                <th>Origin</th>
+                <th>Departure Time</th>
+                <th>Destination</th>
+                <th>Arrival Time</th>
+                <th>$Price (US Dollars)</th>
+                <th>Actions</th>
 
-        </tr>
-        </thead>
-        <tr th:each="flight : ${resultFlights}">
-            <td th:text="${flight.flightId}"></td>
-            <td th:text="${flight.flightNumber}"></td>
-            <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
-            <td th:text="${flight.originCity}"></td>
-            <td th:text="${flight.destinationCity}"></td>
-            <td th:text="${flight.priceUs}"></td>
-            <td><a th:href="'/reservation/book/'  + ${flight.flightId}">Book
-                Reservation</a></td>
-        </tr>
-    </table>
+            </tr>
+            </thead>
+            <tr th:each="flight : ${resultFlights}">
+                <td th:text="${flight.flightId}"></td>
+                <td th:text="${flight.flightNumber}"></td>
+                <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                <td th:text="${flight.carrier}"></td>
+                <td th:text="${flight.originCity}"></td>
+                <td th:text="${flight.departureTime}"></td>
+                <td th:text="${flight.destinationCity}"></td>
+                <td th:text="${flight.arrivalTime}"></td>
+                <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
+                <td><a th:href="'/reservation/book/'  + ${flight.flightId}">Book
+                    Reservation</a></td>
+            </tr>
+        </table>
+    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#flightTable').DataTable({
+            "dom": "tp",
+            "ordering": true,
+            "pagingType": "simple",
+            "lengthMenu": [1],
+            "search": true
+        });
+    });
+</script>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
 

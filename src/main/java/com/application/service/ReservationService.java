@@ -33,8 +33,4 @@ public class ReservationService {
         reservation.setUserId(email);
         return reservationRepository.saveAndFlush(reservation);
     }
-
-//    public List<ReservationLookup> getAvailableFlights(String userId) {
-//        return flightRepository.getAllAvailableFlights(userId);
-//    }
 }
