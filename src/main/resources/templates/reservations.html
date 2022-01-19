@@ -1,56 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/components :: head(~{::title})">
     <title>Reservations</title>
 <body>
 <!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container w-100">
-        <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+<!-------------------------------------------------- SIGNED IN -------------------------------------------------->
+<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedIn">
+    </nav>
+</div>
 
-            <!-------------------------------------------------- SIGNED IN NAV LINKS USER OR ADMIN -------------------------------------------------->
-            <ul class="navbar-nav">
-                <!-------------------------------------------------- ADMIN ONLY NAV DROPDOWN -------------------------------------------------->
-                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link dropdown-toggle text-success" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ADMIN
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a th:href="@{/admin/flightSchedule}" class="dropdown-item">Edit Flight Schedules</a>
-                        <a class="dropdown-item" href="#">Add Flights</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Admin Actions</a>
-                    </div>
-                </li>
-                <!-------------------------------------------------- ADMIN AUTHORITY ONLY END -------------------------------------------------->
+<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
+<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedOut">
+    </nav>
+</div>
 
-                <li class="nav-item"><a class="nav-link text-info text-muted disabled" th:disabled
-                                        th:href="@{/reservations}">MY
-                    TRIPS</a></li>
-                <li class="nav-item"><a class="nav-link text-info" th:href="@{searchFlights/}">BOOK A
-                    FLIGHT</a></li>
-                <li style="float: end; margin-left:25vw" class="nav-item">
-                    <form id="logoutForm" method="post" th:action="@{/logout}"
-                          class="float-right" style="margin-left: 6rem">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <a class="nav-link font-weight-bold text-warning"
-                           href="javascript:null" onclick="document.getElementById('logoutForm').submit();">SIGN OUT</a>
-                    </form>
-                </li>
-                <li class="nav-item float-right" style="margin-left: 5rem">
-                    <a class="nav-link text-white"
-                       target="_blank"
-                       href="https://github.com/harrydulaney/airline-reservation-system"><i
-                            class="bi bi-github"></i></a></li>
-            </ul>
 
-        </div>
-    </div>
-</nav>
 
 <header class="bg-dark py-2">
     <div class="container px-5">

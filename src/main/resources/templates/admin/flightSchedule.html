@@ -1,79 +1,110 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/components :: head(~{::title})">
     <title>Admin Flight Console</title>
+</head>
 <body>
 <!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container w-100">
-        <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-            <ul th:replace="fragments/components :: signedIn">
-            </ul>
+<!-------------------------------------------------- SIGNED IN -------------------------------------------------->
+<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedIn">
+    </nav>
+</div>
 
-        </div>
-    </div>
-</nav>
+<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
+<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedOut">
+    </nav>
+</div>
 
-<header class="bg-dark py-5">
+
+<header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">Present your business in a whole new way</h1>
-                    <p class="lead text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with
-                        Bootstrap, the world’s most popular front-end open source toolkit!</p>
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                        <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                    </div>
-                </div>
+            <div class="text-center my-1">
+                <h1 class="display-5 fw-bolder text-white">Master Flight Schedule</h1>
             </div>
         </div>
     </div>
 </header>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="table-responsive">
+            <form type="hidden" th:action="@{/admin/add-flight}" th:object="${createFlight}" th:id="addForm"
+                  method="post"></form>
+            <table id="flightTable" class="table">
+                <thead>
+                <tr class="bg-info">
+                    <th>Flight #</th>
+                    <th>Departure Date</th>
+                    <th>Carrier</th>
+                    <th>Origin</th>
+                    <th>Departure Time</th>
+                    <th>Destination</th>
+                    <th>Arrival Time</th>
+                    <th>Price $US</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!---------------- Add Flight Form row ---------------->
+                <tr>
+                    <td>
+                        <label>
+                            <input type="text" name="flightNumber" th:form="addForm" class="form-control"
+                                   th:value="${createFlight.flightNumber}">
+                        </label>
+                        <label>
+                            <input type="date" name="departureDate" th:form="addForm" class="form-control"
+                                   th:value="${createFlight.departureDate}">
+                        </label>
+                        <label>
+                            <input type="text" name="carrier" th:form="addForm" class=""
+                                   th:value="${createFlight.carrier}">
+                        </label>
+                        <input type="hidden" name="salary" th:value="${empl.salary}">
+                        <button type="submit">Delete</button>
+                    </td>
+                </tr>
 
-<div class="container">
-    <div class="row">
-        <h3 class="text-center">Master Flight Schedule</h3>
+                <tr th:each="flight : ${resultFlights}">
+                    <td th:text="${flight.flightNumber}"></td>
+                    <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${flight.carrier}"></td>
+                    <td th:text="${flight.originCity}"></td>
+                    <td th:text="${flight.departureTime}"></td>
+                    <td th:text="${flight.destinationCity}"></td>
+                    <td th:text="${flight.arrivalTime}"></td>
+                    <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
+                    <td class="mx-auto"><a th:href="'/admin/flight-schedule/edit/'  + ${f.flightId}">
+
+                        <i class="bi bi-check-circle-fill"><span
+                                class="text-secondary text-muted small"> Edit</span></i></a>
+                    </td>
+                    <td><a class="moduleLabelInPackage p-2">Edit</a>
+
+                        <a class="p-2" th:href="'/admin/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-        <tr class="table-info">
-            <th scope="col">Flight Id</th>
-            <th scope="col">Flight Number</th>
-            <th scope="col">Flight Date</th>
-            <th scope="col">Origin City</th>
-            <th scope="col">Designation City</th>
-            <th scope="col">Price $(US Dollars)</th>
-            <th scope="col">Admin Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="f : ${flights}">
-            <td th:text="${f.flightId}"></td>
-            <td th:text="${f.flightNumber}"></td>
-            <td th:text="${f.departureDate}"></td>
-            <td th:text="${f.originCity}"></td>
-            <td th:text="${f.destinationCity}"></td>
-            <td th:text="${f.priceUs}"></td>
-            <td><a class="moduleLabelInPackage p-2" th:href="'/admin/flight-schedule/edit/'  + ${f.flightId}">Edit</a>
-                <!--                <form th:action="@{/addFlight}" th:object="${flightToDelete}" method="post">-->
-                <!--                    <input type="hidden" name="flightId" th:value="${empl.id}">-->
-                <!--                    <input type="hidden" name="flightNumber" th:value="${empl.name}">-->
-                <!--                    <input type="hidden" name="telephone" th:value="${empl.telephone}">-->
-                <!--                    <input type="hidden" name="salary" th:value="${empl.salary}">-->
-                <!--                    <button type="submit">Delete</button>-->
-                <!--                </form>-->
-                <a class="p-2" th:href="'/admin/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
-
 <div th:replace="fragments/components :: jsScripts"></div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#flightTable').DataTable({
+            "ordering": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+            "search": true
+        });
+    });
+</script>
 </body>
 </html>
