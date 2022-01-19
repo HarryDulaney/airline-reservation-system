@@ -23,7 +23,7 @@ public class FlightController {
     }
 
     @PreAuthorize("hasAuthority('users')")
-    @GetMapping(path = "searchFlights")
+    @GetMapping(path = "/searchFlights")
     public String searchAvailableFlights(@AuthenticationPrincipal OidcUser oidcUser,
                                          Model model) {
         List<Flight> flights = flightService.getAvailableFlights(oidcUser.getEmail());
