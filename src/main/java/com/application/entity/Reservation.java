@@ -54,10 +54,10 @@ public class Reservation {
     public void setReservationId(Long reservationId) {
         this.reservationId = reservationId;
     }
-
     public String getUserId() {
         return userId;
     }
+
 
     public void setUserId(String userId) {
         this.userId = userId;

@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/components :: head(~{::title})">
-    <title>Simulation Airlines</title>
+    <title>Search Flights</title>
 </head>
 <body>
 <!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container w-100">
-        <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-            <ul th:replace="fragments/components :: signedIn">
-            </ul>
-        </div>
-    </div>
-</nav>
-<header class="bg-dark py-5">
+<!-------------------------------------------------- SIGNED IN -------------------------------------------------->
+<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedIn">
+    </nav>
+</div>
+
+<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
+<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedOut">
+    </nav>
+</div>
+
+
+<header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
-            <div class="text-center my-5">
+            <div class="text-center my-1">
                 <h1 class="display-5 fw-bolder text-white">Available Flights</h1>
             </div>
         </div>
@@ -26,51 +31,53 @@
 </header>
 <div class="container my-5">
     <div class="row justify-content-center">
-        <table id="flightTable" class="table table-responsive">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Flight #</th>
-                <th>Departure Date</th>
-                <th>Airline Carrier</th>
-                <th>Origin</th>
-                <th>Departure Time</th>
-                <th>Destination</th>
-                <th>Arrival Time</th>
-                <th>$Price (US Dollars)</th>
-                <th>Actions</th>
-
-            </tr>
-            </thead>
-            <tr th:each="flight : ${resultFlights}">
-                <td th:text="${flight.flightId}"></td>
-                <td th:text="${flight.flightNumber}"></td>
-                <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
-                <td th:text="${flight.carrier}"></td>
-                <td th:text="${flight.originCity}"></td>
-                <td th:text="${flight.departureTime}"></td>
-                <td th:text="${flight.destinationCity}"></td>
-                <td th:text="${flight.arrivalTime}"></td>
-                <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
-                <td><a th:href="'/reservation/book/'  + ${flight.flightId}">Book
-                    Reservation</a></td>
-            </tr>
-        </table>
+        <div class="table-responsive">
+            <table id="flightTable" class="table">
+                <thead>
+                <tr class="bg-info">
+                    <th>Flight #</th>
+                    <th>Departure Date</th>
+                    <th>Carrier</th>
+                    <th>Origin</th>
+                    <th>Departure Time</th>
+                    <th>Destination</th>
+                    <th>Arrival Time</th>
+                    <th>Price $US</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="flight : ${resultFlights}">
+                    <td th:text="${flight.flightNumber}"></td>
+                    <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${flight.carrier}"></td>
+                    <td th:text="${flight.originCity}"></td>
+                    <td th:text="${flight.departureTime}"></td>
+                    <td th:text="${flight.destinationCity}"></td>
+                    <td th:text="${flight.arrivalTime}"></td>
+                    <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
+                    <td class="mx-auto"><a th:href="'/reservation/book/'  + ${flight.flightId}">
+                        <i class="bi bi-check-circle-fill"><span class="text-secondary text-muted small"> Select</span></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+<footer th:replace="fragments/components :: footer"></footer>
+<div th:replace="fragments/components :: jsScripts"></div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#flightTable').DataTable({
-            "dom": "tp",
             "ordering": true,
-            "pagingType": "simple",
-            "lengthMenu": [1],
+            "pageLength": 10,
+            "lengthChange": true,
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
             "search": true
         });
     });
 </script>
-<footer th:replace="fragments/components :: footer"></footer>
-<div th:replace="fragments/components :: jsScripts"></div>
-
 </body>
 </html>

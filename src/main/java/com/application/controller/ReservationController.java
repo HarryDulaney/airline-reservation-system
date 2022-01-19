@@ -3,6 +3,7 @@ package com.application.controller;
 
 import com.application.entity.Reservation;
 import com.application.service.ReservationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @PreAuthorize("hasAuthority('users')")
     @GetMapping(path = "/reservation/delete/{id}")
     public String deleteUserReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
                                         @PathVariable(value = "id") Long reservationId) {
@@ -27,6 +29,7 @@ public class ReservationController {
         return "redirect:/reservations";
     }
 
+    @PreAuthorize("hasAuthority('users')")
     @GetMapping(path = "/reservation/book/{id}")
     public String createReservation(@AuthenticationPrincipal OidcUser oidcUser, Model model,
                                     @PathVariable(value = "id") Long flightId) {
@@ -35,6 +38,7 @@ public class ReservationController {
         return "redirect:/reservations";
     }
 
+    @PreAuthorize("hasAuthority('users')")
     @GetMapping(path = "/reservations")
     public String getUsersReservations(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         model.addAttribute("allReservations", reservationService.getAll(oidcUser.getEmail()));

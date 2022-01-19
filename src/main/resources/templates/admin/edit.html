@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments/components :: head(~{::title})">
     <title>Edit Flight Details</title>
 </head>
 <body>
 <!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container w-100">
-        <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-            <ul th:replace="fragments/components :: signedIn">
-            </ul>
+<!-------------------------------------------------- SIGNED IN -------------------------------------------------->
+<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedIn">
+    </nav>
+</div>
 
-        </div>
-    </div>
-</nav>
+<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
+<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedOut">
+    </nav>
+</div>
+
+
 <header class="bg-dark py-5">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">

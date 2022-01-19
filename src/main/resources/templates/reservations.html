@@ -1,56 +1,69 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/components :: head(~{::title})">
     <title>Reservations</title>
 <body>
 <!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container w-100">
-        <a class="navbar-brand" href="#" th:href="@{/}"> <i class="bi bi-house"></i> Simulation Airlines</a>
-        <div class="navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-            <ul th:replace="fragments/components :: signedIn">
-            </ul>
-        </div>
-    </div>
-</nav>
+<!-------------------------------------------------- SIGNED IN -------------------------------------------------->
+<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedIn">
+    </nav>
+</div>
 
-<header class="bg-dark py-5">
+<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
+<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
+    <nav th:replace="fragments/components :: signedOut">
+    </nav>
+</div>
+
+
+
+<header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
-            <div class="text-center my-5">
+            <div class="text-center my-1">
                 <h1 class="display-5 fw-bolder text-white">Your Reservations</h1>
             </div>
         </div>
     </div>
 </header>
 <div class="container my-5">
-    <table id="reservationTable" class="table table-responsive">
-        <thead>
-        <tr>
-            <th>Reservation #</th>
-            <th>Flight Id</th>
-            <th>Flight Number</th>
-            <th>Flight Date</th>
-            <th>Origin</th>
-            <th>Destination</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tr th:each="reservation : ${allReservations}">
-            <td th:text="${reservation.reservationId}"></td>
-            <td th:text="${reservation.flight.flightId}"></td>
-            <td th:text="${reservation.flight.flightNumber}"></td>
-            <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
-            <td th:text="${reservation.flight.originCity}"></td>
-            <td th:text="${reservation.flight.destinationCity}"></td>
-            <td th:text="${'$' + #numbers.formatDecimal(reservation.flight.priceUs, 1, 2)}"></td>
+    <div class="table-responsive">
+        <table id="reservationTable" class="table">
+            <thead>
+            <tr class="bg-info">
+                <th>Reservation #</th>
+                <th>Flight #</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Carrier</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Total Cost</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservation : ${allReservations}">
+                <td th:text="${reservation.reservationId}"></td>
+                <td th:text="${reservation.flight.flightNumber}"></td>
+                <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                <td th:text="${#temporals.format(reservation.flight.departureTime,'HH:mm')}"></td>
+                <td th:text="${#temporals.format(reservation.flight.arrivalTime,'HH:mm')}"></td>
+                <td th:text="${reservation.flight.carrier}"></td>
+                <td th:text="${reservation.flight.originCity}"></td>
+                <td th:text="${reservation.flight.destinationCity}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(reservation.flight.priceUs, 1, 2)}"></td>
 
-            <td><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">Cancel Reservation</a></td>
-        </tr>
-    </table>
-
+                <td class="mx-auto"><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">
+                    <i class="bi bi-x-circle-fill"><span class="text-secondary text-muted small"> Delete</span></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
