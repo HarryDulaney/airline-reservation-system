@@ -117,12 +117,10 @@
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>Manage Users</strong>
+                                <strong> Add new flights
+                                </strong>
                             </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Add new flights
-                            </li>
+
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
                                 Edit existing flights
@@ -144,8 +142,16 @@
                                 Only one account per Admin
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Request Admin Credentials</a>
+                        <div class="d-grid" th:unless="${#authorization.expression('isAuthenticated()')}">
+                            <a class="btn btn-outline-primary disabled" href="!#" disabled>Please register a user
+                                account first</a>
                         </div>
+
+                        <div class="d-grid" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a class="btn btn-outline-primary disabled" th:href="@{/requestAdmin}" th:disabled>Coming
+                                Soon! Please contact project Admin through the GitHub Page</a>
+                        </div>
+
                     </div>
                 </div>
             </div>
