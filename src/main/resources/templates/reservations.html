@@ -18,7 +18,6 @@
 </div>
 
 
-
 <header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
@@ -30,7 +29,7 @@
 </header>
 <div class="container my-5">
     <div class="table-responsive">
-        <table id="reservationTable" class="table">
+        <table id="reservationTable" class="table display" style="width: 100%;">
             <thead>
             <tr class="bg-info">
                 <th>Reservation #</th>
@@ -67,6 +66,22 @@
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#reservationTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)',
+            },
+            responsive: true,
+            "ordering": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+            "search": true,
 
+        });
+    });
+</script>
 </body>
 </html>

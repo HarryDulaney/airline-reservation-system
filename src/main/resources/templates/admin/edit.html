@@ -1,41 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/components :: head(~{::title})">
-    <title>Edit Flight Details</title>
-</head>
+    <title>Reservations</title>
 <body>
 <!-- Responsive navbar-->
 <!-------------------------------------------------- SIGNED IN -------------------------------------------------->
-<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
-    <nav th:replace="fragments/components :: signedIn">
-    </nav>
-</div>
+<nav th:replace="fragments/components :: signedIn">
+</nav>
 
-<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
-<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
-    <nav th:replace="fragments/components :: signedOut">
-    </nav>
-</div>
-
-
-<header class="bg-dark py-5">
+<header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">Present your business in a whole new way</h1>
-                    <p class="lead text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with
-                        Bootstrap, the world’s most popular front-end open source toolkit!</p>
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                        <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                    </div>
-                </div>
+            <div class="text-center my-1">
+                <h1 class="display-5 fw-bolder text-white">Your Reservations</h1>
             </div>
         </div>
     </div>
 </header>
+
+
 <div class="container">
     <h2>Edit Flight Details</h2>
     <div>
@@ -56,13 +40,61 @@
         </form>
     </div>
 </div>
+<div class="container my-5">
+    <div class="table-responsive">
+        <table id="reservationTable" class="table display" style="width: 100%;">
+            <thead>
+            <tr class="bg-info">
+                <th>Reservation #</th>
+                <th>Flight #</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Carrier</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Total Cost</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservation : ${allReservations}">
+                <td th:text="${reservation.reservationId}"></td>
+                <td th:text="${reservation.flight.flightNumber}"></td>
+                <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                <td th:text="${#temporals.format(reservation.flight.departureTime,'HH:mm')}"></td>
+                <td th:text="${#temporals.format(reservation.flight.arrivalTime,'HH:mm')}"></td>
+                <td th:text="${reservation.flight.carrier}"></td>
+                <td th:text="${reservation.flight.originCity}"></td>
+                <td th:text="${reservation.flight.destinationCity}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(reservation.flight.priceUs, 1, 2)}"></td>
 
-<footer class="align-bottom text-center">
-    <span style="bottom: 0" class="text-center align-bottom"><a class="btn btn-secondary"
-                                                                href="https://github.com/harrydulaney" target="_blank">Coded By Harry Dulaney</a></span>
-</footer>
-
+                <td class="mx-auto"><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">
+                    <i class="bi bi-x-circle-fill"><span class="text-secondary text-muted small"> Delete</span></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#reservationTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)',
+            },
+            responsive: true,
+            "ordering": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+            "search": true,
 
+        });
+    });
+</script>
 </body>
 </html>

@@ -27,16 +27,21 @@ public class FlightService {
     }
 
 
-    public void deleteFlight(Long flightId) {
-        Optional<Flight> flight = flightRepository.findById(flightId);
-
-        flight.ifPresent(flightEntity -> {
-            flightRepository.delete(flightEntity);
-        });
+    public void deleteFlight(Flight flight) {
+        flightRepository.delete(flight);
     }
 
     public Flight getFlightById(Long flightId) {
         Optional<Flight> flight = flightRepository.findById(flightId);
         return flight.orElseGet(Flight::new);
+    }
+
+    public Flight addFlight(Flight flight) {
+        flightRepository.saveAndFlush(flight);
+        return flight;
+    }
+
+    public void saveFlight(Flight flight) {
+        flightRepository.saveAndFlush(flight);
     }
 }

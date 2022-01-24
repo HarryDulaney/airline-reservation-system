@@ -8,6 +8,10 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.lang.Long;
 import java.util.Objects;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import javax.persistence.*;
 
@@ -20,6 +24,8 @@ public class Flight {
     @Column(name = "flight_id")
     private Long flightId;
 
+    @Min(4)
+    @Max(4)
     @Column(name = "flight_num")
     private String flightNumber;
 

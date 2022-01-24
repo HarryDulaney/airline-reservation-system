@@ -7,9 +7,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -35,27 +38,51 @@ public class FlightController {
     @GetMapping(path = "/admin/flightSchedule")
     public String getAllFlightsSchedule(@AuthenticationPrincipal OidcUser oidcUser,
                                         Model model) {
+        Flight flight = new Flight();
+        model.addAttribute("newFlight", flight);
         List<Flight> flights = flightService.getAllFlights();
         model.addAttribute("flights", flights);
         return "admin/flightSchedule";
     }
 
     @PreAuthorize("hasAuthority('admins')")
-    @GetMapping(path = "/admin/flight-schedule/delete/{id}")
+    @PostMapping(path = "/administrator/flight-schedule-delete")
     public String deleteFlight(@AuthenticationPrincipal OidcUser oidcUser,
-                               @PathVariable(name = "id") Long flightId,
+                               @ModelAttribute("flight") Flight flight,
                                Model model) {
-        flightService.deleteFlight(flightId);
+        flightService.deleteFlight(flight);
         List<Flight> flights = flightService.getAllFlights();
         model.addAttribute("flights", flights);
         return "redirect:/admin/flightSchedule";
     }
 
     @PreAuthorize("hasAuthority('admins')")
-    @GetMapping(path = "/admin/flight-schedule/edit/{id}")
-    public String editFlightSchedule(Model model, @PathVariable(value = "id") Long flightId) {
-        model.addAttribute("flight", flightService.getFlightById(flightId));
-        return "admin/edit";
+    @PostMapping(path = "/administrator/flight-schedule-add")
+    public ModelAndView addFlight(@AuthenticationPrincipal OidcUser oidcUser,
+                                  @Valid Flight newFlight,
+                                  BindingResult bindingResult,
+                                  ModelAndView mav) {
+
+        if (bindingResult.hasErrors()) {
+            mav.setViewName("/admin/flightSchedule");
+            mav.addObject("addFlightResult", bindingResult.getFieldErrors());
+            return mav;
+        }
+
+        flightService.addFlight(newFlight);
+        List<Flight> flights = flightService.getAllFlights();
+        mav.setViewName("redirect:/admin/flightSchedule");
+        mav.addObject("flights", flights);
+        return mav;
+    }
+
+    @PreAuthorize("hasAuthority('admins')")
+    @PostMapping(path = "/administrator/flight-schedule-save")
+    public String editFlightSchedule(@ModelAttribute("flight") Flight flight, Model model) {
+        flightService.saveFlight(flight);
+        List<Flight> flights = flightService.getAllFlights();
+        model.addAttribute("flights", flights);
+        return "redirect:/admin/flightSchedule";
     }
 
 }

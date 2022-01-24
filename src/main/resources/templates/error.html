@@ -29,7 +29,9 @@
             <a class="btn btn-warning text-white" th:href="@{/}"><i class="bi bi-arrow-left"></i>Main Menu
             </a>
             <hr>
-            <h1 class="display-5 fw-bolder text-white mb-2" th:text="${exception.getMessage()}"></h1>
+            <div class="display-5 fw-bolder text-white mb-2" th:each="m : ${messages}">
+                <h5 th:text="${m}"></h5>
+            </div>
         </div>
     </div>
 

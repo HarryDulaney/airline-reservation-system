@@ -7,17 +7,8 @@
 <body>
 <!-- Responsive navbar-->
 <!-------------------------------------------------- SIGNED IN -------------------------------------------------->
-<div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
-    <nav th:replace="fragments/components :: signedIn">
-    </nav>
-</div>
-
-<!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
-<div th:if="${#bools.isFalse(#authorization.expression('isAuthenticated()'))}">
-    <nav th:replace="fragments/components :: signedOut">
-    </nav>
-</div>
-
+<nav th:replace="fragments/components :: signedIn">
+</nav>
 
 <header class="bg-dark py-2">
     <div class="container px-5">
@@ -28,13 +19,85 @@
         </div>
     </div>
 </header>
+<!-- Add New Flight Modal -->
+<div class="modal fade" id="addNewFlightModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Add New Flight</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" th:action="@{/administrator/flight-schedule-add}" th:object="${newFlight}"
+                      method="post" class="needs-validation was-validated">
+                    <div class="form-group my-1">
+                        <label for="i1">Flight Number</label><input type="text" name="newFlight" class="form-control"
+                                                                    id="i1"
+                                                                    th:field="*{flightNumber}" placeholder="Ex: W3Y7"
+                                                                    required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i2">Carrier Airline</label><input type="text" name="carrier" class="form-control"
+                                                                      id="i2"
+                                                                      th:field="*{carrier}" placeholder="Ex: Delta"
+                                                                      required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i3">Departure Date</label><input type="date" name="departureDate"
+                                                                     class="form-control" id="i3"
+                                                                     th:field="*{departureDate}" required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i4">Origin City</label><input type="text" name="originCity" class="form-control"
+                                                                  id="i4"
+                                                                  th:field="*{originCity}" required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i5">Destination City</label><input type="text" name="destinationCity"
+                                                                       class="form-control" id="i5"
+                                                                       th:field="*{destinationCity}" required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i6">Departure Time</label><input type="time" name="departureTime"
+                                                                     class="form-control" id="i6"
+                                                                     th:field="*{departureTime}" required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i7">Arrival Time</label><input type="time" name="arrivalTime" class="form-control"
+                                                                   id="i7"
+                                                                   th:field="*{arrivalTime}" required>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="i8">Price ($US)</label><input type="number" name="priceUs" class="form-control"
+                                                                  id="i8"
+                                                                  th:field="*{priceUs}" placeholder="Ex: 555.55"
+                                                                  required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Discard</button>
+                <button type="submit" class="btn btn-primary">Save and Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="table-responsive">
-            <form type="hidden" th:action="@{/admin/add-flight}" th:object="${createFlight}" th:id="addForm"
-                  method="post"></form>
-            <table id="flightTable" class="table">
+            <table id="editFlightTable" class="display" style="width: 100%;">
                 <thead>
+                <tr class="bg-light">
+                    <th>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#addNewFlightModal">Add
+                        </button>
+                    </th>
+                </tr>
                 <tr class="bg-info">
                     <th>Flight #</th>
                     <th>Departure Date</th>
@@ -49,26 +112,7 @@
                 </thead>
                 <tbody>
                 <!---------------- Add Flight Form row ---------------->
-                <tr>
-                    <td>
-                        <label>
-                            <input type="text" name="flightNumber" th:form="addForm" class="form-control"
-                                   th:value="${createFlight.flightNumber}">
-                        </label>
-                        <label>
-                            <input type="date" name="departureDate" th:form="addForm" class="form-control"
-                                   th:value="${createFlight.departureDate}">
-                        </label>
-                        <label>
-                            <input type="text" name="carrier" th:form="addForm" class=""
-                                   th:value="${createFlight.carrier}">
-                        </label>
-                        <input type="hidden" name="salary" th:value="${empl.salary}">
-                        <button type="submit">Delete</button>
-                    </td>
-                </tr>
-
-                <tr th:each="flight : ${resultFlights}">
+                <tr th:each="flight, itemStat : ${flights}" th:object="${flights}">
                     <td th:text="${flight.flightNumber}"></td>
                     <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
                     <td th:text="${flight.carrier}"></td>
@@ -77,18 +121,173 @@
                     <td th:text="${flight.destinationCity}"></td>
                     <td th:text="${flight.arrivalTime}"></td>
                     <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
-                    <td class="mx-auto"><a th:href="'/admin/flight-schedule/edit/'  + ${f.flightId}">
+                    <td class="mx-auto btn-group">
+                        <!-- Edit Button -->
+                        <button
+                                type="submit"
+                                class="btn btn-primary m-1"
+                                style="font-size:0.8rem"
+                                data-toggle="modal"
+                                data-target="#editFlightModal">
+                            <small>Edit</small>
+                        </button>
+                        <!-- Delete button -->
+                        <button type="button"
+                                class="btn btn-primary m-1"
+                                style="font-size: 0.8rem;"
+                                data-toggle="modal"
+                                data-target="#deleteFlightModal">
+                            <small>Delete</small></button>
 
-                        <i class="bi bi-check-circle-fill"><span
-                                class="text-secondary text-muted small"> Edit</span></i></a>
+
+                        <!-- Edit Flight Modal -->
+                        <div class="modal fade" id="editFlightModal" tabindex="-1" role="dialog"
+                             aria-labelledby="editModalLbl"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLbl">Edit Flight</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editFlightForm" action="#"
+                                              th:action="@{/administrator/flight-schedule-save}"
+                                              th:object="${flight}"
+                                              method="post">
+                                            <input type="hidden" th:value="*{flightId}" th:attr="value=*{flightId}"
+                                                   name="flightId"/>
+                                            <div class="form-group my-1">
+                                                <label for="f1">Flight Number</label><input type="text"
+                                                                                            name="flightNumber"
+                                                                                            class="form-control"
+                                                                                            id="f1"
+                                                                                            th:attr="value=*{flightNumber}"
+                                                                                            th:value="*{flightNumber}"
+                                                                                            required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f2">Carrier Airline</label><input type="text" name="carrier"
+                                                                                              class="form-control"
+                                                                                              id="f2"
+                                                                                              th:attr="value=*{carrier}"
+                                                                                              th:value="*{carrier}"
+                                                                                              required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f3">Departure Date</label><input type="date"
+                                                                                             name="departureDate"
+                                                                                             class="form-control"
+                                                                                             id="f3"
+                                                                                             th:attr="value=*{departureDate}"
+                                                                                             th:value="*{departureDate}"
+                                                                                             required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f4">Origin City</label><input type="text" name="originCity"
+                                                                                          class="form-control"
+                                                                                          id="f4"
+                                                                                          th:attr="value=*{originCity}"
+                                                                                          th:value="*{originCity}"
+                                                                                          required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f5">Destination City</label><input type="text"
+                                                                                               name="destinationCity"
+                                                                                               class="form-control"
+                                                                                               id="f5"
+                                                                                               th:attr="value=*{destinationCity}"
+                                                                                               th:value="*{destinationCity}"
+                                                                                               required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f6">Departure Time</label><input type="time"
+                                                                                             name="departureTime"
+                                                                                             class="form-control"
+                                                                                             id="f6"
+                                                                                             th:attr="value=*{departureTime}"
+                                                                                             th:value="*{departureTime}"
+                                                                                             required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f7">Arrival Time</label><input type="time"
+                                                                                           name="arrivalTime"
+                                                                                           class="form-control"
+                                                                                           id="f7"
+                                                                                           th:attr="value=*{arrivalTime}"
+                                                                                           th:value="*{arrivalTime}"
+                                                                                           required>
+                                            </div>
+                                            <div class="form-group my-1">
+                                                <label for="f8">Price ($US)</label><input type="number" name="priceUs"
+                                                                                          class="form-control"
+                                                                                          id="f8"
+                                                                                          th:attr="value=*{priceUs}"
+                                                                                          th:value="*{priceUs}"
+                                                                                          required>
+                                            </div>
+                                        </form>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary"
+                                                data-dismiss="modal">Discard
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Flight Modal -->
+                        <div class="modal fade" id="deleteFlightModal" tabindex="-1" role="dialog"
+                             aria-labelledby="deleteFlightLbl"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteFlightLbl">Confirm Delete Flight</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3 class="text-danger font-weight-bold"
+                                            th:value="'Are you sure you want to delete Flight Number: ' + ${flight.flightNumber}"></h3>
+                                        <form id="deleteForm" type="hidden"
+                                              th:object="${flight}"
+                                              th:action="@{/administrator/flight-schedule-delete}" method="post">
+                                            <input type="hidden" th:value="*{flightId}" name="flightId"/>
+                                            <input type="hidden" th:value="*{flightNumber}" name="flightNumber"/>
+                                            <input type="hidden" th:value="*{carrier}" name="carrier"/>
+                                            <input type="hidden" th:value="*{departureDate}" name="departureDate"/>
+                                            <input type="hidden" th:value="*{originCity}" name="originCity"/>
+                                            <input type="hidden" th:value="*{destinationCity}" name="destinationCity"/>
+                                            <input type="hidden" th:value="*{departureTime}" name="departureTime"/>
+                                            <input type="hidden" th:value="*{arrivalTime}" name="arrivalTime"/>
+                                            <input type="hidden" th:value="*{priceUs}" name="priceUs"/>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Don't Delete
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
-                    <td><a class="moduleLabelInPackage p-2">Edit</a>
-
-                        <a class="p-2" th:href="'/admin/flight-schedule/delete/'  + ${f.flightId}">Delete</a></td>
+                </tr>
+                <tr th:if="${flights.isEmpty()}">
+                    <td class="text-center" colspan="8">No Flight records found...</td>
                 </tr>
                 </tbody>
-
             </table>
+
         </div>
     </div>
 </div>
@@ -96,13 +295,17 @@
 <div th:replace="fragments/components :: jsScripts"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#flightTable').DataTable({
+        $('#editFlightTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)',
+            },
+            responsive: true,
             "ordering": true,
             "pageLength": 10,
             "lengthChange": true,
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
-            "search": true
+            "search": true,
         });
     });
 </script>

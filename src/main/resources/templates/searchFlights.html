@@ -70,12 +70,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#flightTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
+            responsive: true,
             "ordering": true,
             "pageLength": 10,
             "lengthChange": true,
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
-            "search": true
+            "search": true,
         });
     });
 </script>
