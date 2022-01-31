@@ -29,8 +29,14 @@
             <a class="btn btn-warning text-white" th:href="@{/}"><i class="bi bi-arrow-left"></i>Main Menu
             </a>
             <hr>
+            <!--/*@thymesVar id="messages" type="com.application.exceptions.GlobalExceptionHandler"*/-->
             <div class="display-5 fw-bolder text-white mb-2" th:each="m : ${messages}">
-                <h5 th:text="${m}"></h5>
+                <span th:text="${m}"></span>
+            </div>
+            <p>Exception:</p>
+            <div class="display-5 fw-bolder text-white mb-2">
+                <!--/*@thymesVar id="exception" type="com.application.exceptions.GlobalExceptionHandler"*/-->
+                <span th:text="${exception}"></span>
             </div>
         </div>
     </div>

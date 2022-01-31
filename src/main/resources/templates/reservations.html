@@ -32,6 +32,7 @@
         <table id="reservationTable" class="table display" style="width: 100%;">
             <thead>
             <tr class="bg-info">
+                <th>Current Status</th>
                 <th>Reservation #</th>
                 <th>Flight #</th>
                 <th>Departure Date</th>
@@ -46,6 +47,7 @@
             </thead>
             <tbody>
             <tr th:each="reservation : ${allReservations}">
+                <td th:text="${reservation.status}"></td>
                 <td th:text="${reservation.reservationId}"></td>
                 <td th:text="${reservation.flight.flightNumber}"></td>
                 <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
@@ -59,6 +61,10 @@
                 <td class="mx-auto"><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">
                     <i class="bi bi-x-circle-fill"><span class="text-secondary text-muted small"> Delete</span></i></a>
                 </td>
+            </tr>
+
+            <tr th:if="${allReservations.isEmpty()}">
+                <td class="text-center" colspan="8">Reservations will appear here...</td>
             </tr>
             </tbody>
         </table>

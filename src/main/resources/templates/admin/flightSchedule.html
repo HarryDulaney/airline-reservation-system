@@ -14,11 +14,18 @@
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
             <div class="text-center my-1">
-                <h1 class="display-5 fw-bolder text-white">Master Flight Schedule</h1>
+                <h1 class="display-5 fw-bolder text-danger font-weight-bolder">Master Flight Schedule</h1>
             </div>
         </div>
     </div>
 </header>
+
+<!-- Toast Notifications -->
+<div id="successAlert" class="alert alert-primary" role="alert" th:text="${success}"
+     th:if="${success}"></div>
+<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+
+
 <!-- Add New Flight Modal -->
 <div class="modal fade" id="addNewFlightModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
      aria-hidden="true">
@@ -31,56 +38,76 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" th:action="@{/administrator/flight-schedule-add}" th:object="${newFlight}"
+                <form id="addFlightForm" th:action="@{/admin-api/v1/add-flight}" th:object="${newFlight}"
                       method="post" class="needs-validation was-validated">
                     <div class="form-group my-1">
-                        <label for="i1">Flight Number</label><input type="text" name="newFlight" class="form-control"
+                        <label for="i1">Flight Number</label><input type="text" name="flightNumber" class="form-control"
                                                                     id="i1"
-                                                                    th:field="*{flightNumber}" placeholder="Ex: W3Y7"
+                                                                    th:field="*{flightNumber}"
+                                                                    th:value="${newFlight.flightNumber}"
+                                                                    placeholder="Ex: W3Y7"
                                                                     required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i2">Carrier Airline</label><input type="text" name="carrier" class="form-control"
                                                                       id="i2"
+                                                                      th:value="${newFlight.carrier}"
                                                                       th:field="*{carrier}" placeholder="Ex: Delta"
                                                                       required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i3">Departure Date</label><input type="date" name="departureDate"
                                                                      class="form-control" id="i3"
+                                                                     th:value="${newFlight.departureDate}"
                                                                      th:field="*{departureDate}" required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i4">Origin City</label><input type="text" name="originCity" class="form-control"
                                                                   id="i4"
+                                                                  th:value="${newFlight.originCity}"
                                                                   th:field="*{originCity}" required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i5">Destination City</label><input type="text" name="destinationCity"
                                                                        class="form-control" id="i5"
+                                                                       th:value="${newFlight.destinationCity}"
                                                                        th:field="*{destinationCity}" required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i6">Departure Time</label><input type="time" name="departureTime"
                                                                      class="form-control" id="i6"
+                                                                     th:value="${newFlight.departureTime}"
                                                                      th:field="*{departureTime}" required>
                     </div>
                     <div class="form-group my-1">
                         <label for="i7">Arrival Time</label><input type="time" name="arrivalTime" class="form-control"
                                                                    id="i7"
+                                                                   th:value="${newFlight.arrivalTime}"
                                                                    th:field="*{arrivalTime}" required>
                     </div>
                     <div class="form-group my-1">
-                        <label for="i8">Price ($US)</label><input type="number" name="priceUs" class="form-control"
+                        <label for="i8">Price ($US)</label><input type="number" step="0.01" name="priceUs"
+                                                                  class="form-control"
                                                                   id="i8"
+                                                                  th:value="${newFlight.priceUs}"
                                                                   th:field="*{priceUs}" placeholder="Ex: 555.55"
                                                                   required>
                     </div>
+                    <div class="form-group my-1">
+                        <label for="f8">Status</label><input type="text" name="flightStatus"
+                                                             class="form-control"
+                                                             id="i9"
+                                                             th:field="*{flightStatus}"
+                                                             th:value="${newFlight.flightStatus}"
+                                                             placeholder="Ex: OnTime"
+                                                             required>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Discard</button>
-                <button type="submit" class="btn btn-primary">Save and Submit</button>
+                <button type="submit" form="addFlightForm" class="btn btn-primary">Save and Submit</button>
             </div>
         </div>
     </div>
@@ -93,9 +120,13 @@
                 <thead>
                 <tr class="bg-light">
                     <th>
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#addNewFlightModal">Add
+                        <span class="btn-group">
+                        <button type="button" class="btn btn-primary m-1" data-toggle="modal"
+                                data-target="#addNewFlightModal">
+                            Add
                         </button>
+
+                        </span>
                     </th>
                 </tr>
                 <tr class="bg-info">
@@ -107,12 +138,13 @@
                     <th>Destination</th>
                     <th>Arrival Time</th>
                     <th>Price $US</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!---------------- Add Flight Form row ---------------->
-                <tr th:each="flight, itemStat : ${flights}" th:object="${flights}">
+                <tr th:each="flight, i : ${flights}">
                     <td th:text="${flight.flightNumber}"></td>
                     <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
                     <td th:text="${flight.carrier}"></td>
@@ -121,24 +153,26 @@
                     <td th:text="${flight.destinationCity}"></td>
                     <td th:text="${flight.arrivalTime}"></td>
                     <td class="font-weight-bold" th:text="${flight.priceUs}"></td>
+                    <td th:text="${flight.flightStatus}"></td>
                     <td class="mx-auto btn-group">
-                        <!-- Edit Button -->
+                        <!-- Delete button -->
                         <button
+                                id="deleteRowButton"
                                 type="submit"
-                                class="btn btn-primary m-1"
                                 style="font-size:0.8rem"
                                 data-toggle="modal"
-                                data-target="#editFlightModal">
+                                data-target="#deleteFlightModal"
+                                class="btn btn-primary m-1">
+                            <small>Delete</small>
+                        </button>
+                        <!-- Edit Button -->
+                        <button type="submit"
+                                style="font-size:0.8rem"
+                                data-toggle="modal"
+                                data-target="#editFlightModal"
+                                class="btn btn-primary m-1">
                             <small>Edit</small>
                         </button>
-                        <!-- Delete button -->
-                        <button type="button"
-                                class="btn btn-primary m-1"
-                                style="font-size: 0.8rem;"
-                                data-toggle="modal"
-                                data-target="#deleteFlightModal">
-                            <small>Delete</small></button>
-
 
                         <!-- Edit Flight Modal -->
                         <div class="modal fade" id="editFlightModal" tabindex="-1" role="dialog"
@@ -153,27 +187,27 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="editFlightForm" action="#"
-                                              th:action="@{/administrator/flight-schedule-save}"
+                                        <form action="#" id="editFlightForm"
+                                              th:action="@{/admin-api/v1/save-flight}"
                                               th:object="${flight}"
                                               method="post">
-                                            <input type="hidden" th:value="*{flightId}" th:attr="value=*{flightId}"
-                                                   name="flightId"/>
+                                            <input type="hidden" name="flightId"
+                                                   th:value="${flight.flightId}"/>
                                             <div class="form-group my-1">
                                                 <label for="f1">Flight Number</label><input type="text"
                                                                                             name="flightNumber"
                                                                                             class="form-control"
                                                                                             id="f1"
-                                                                                            th:attr="value=*{flightNumber}"
-                                                                                            th:value="*{flightNumber}"
+                                                                                            th:value="${flight.flightNumber}"
+                                                                                            placeholder="Ex: W3Y7"
                                                                                             required>
                                             </div>
                                             <div class="form-group my-1">
-                                                <label for="f2">Carrier Airline</label><input type="text" name="carrier"
+                                                <label for="f2">Carrier Airline</label><input type="text"
+                                                                                              name="carrier"
                                                                                               class="form-control"
                                                                                               id="f2"
-                                                                                              th:attr="value=*{carrier}"
-                                                                                              th:value="*{carrier}"
+                                                                                              th:value="${flight.carrier}"
                                                                                               required>
                                             </div>
                                             <div class="form-group my-1">
@@ -181,16 +215,15 @@
                                                                                              name="departureDate"
                                                                                              class="form-control"
                                                                                              id="f3"
-                                                                                             th:attr="value=*{departureDate}"
-                                                                                             th:value="*{departureDate}"
+                                                                                             th:value="${flight.departureDate}"
                                                                                              required>
                                             </div>
                                             <div class="form-group my-1">
-                                                <label for="f4">Origin City</label><input type="text" name="originCity"
+                                                <label for="f4">Origin City</label><input type="text"
+                                                                                          name="originCity"
                                                                                           class="form-control"
                                                                                           id="f4"
-                                                                                          th:attr="value=*{originCity}"
-                                                                                          th:value="*{originCity}"
+                                                                                          th:value="${flight.originCity}"
                                                                                           required>
                                             </div>
                                             <div class="form-group my-1">
@@ -198,8 +231,7 @@
                                                                                                name="destinationCity"
                                                                                                class="form-control"
                                                                                                id="f5"
-                                                                                               th:attr="value=*{destinationCity}"
-                                                                                               th:value="*{destinationCity}"
+                                                                                               th:value="${flight.destinationCity}"
                                                                                                required>
                                             </div>
                                             <div class="form-group my-1">
@@ -207,8 +239,7 @@
                                                                                              name="departureTime"
                                                                                              class="form-control"
                                                                                              id="f6"
-                                                                                             th:attr="value=*{departureTime}"
-                                                                                             th:value="*{departureTime}"
+                                                                                             th:value="${flight.departureTime}"
                                                                                              required>
                                             </div>
                                             <div class="form-group my-1">
@@ -216,18 +247,26 @@
                                                                                            name="arrivalTime"
                                                                                            class="form-control"
                                                                                            id="f7"
-                                                                                           th:attr="value=*{arrivalTime}"
-                                                                                           th:value="*{arrivalTime}"
+                                                                                           th:value="${flight.arrivalTime}"
                                                                                            required>
                                             </div>
                                             <div class="form-group my-1">
-                                                <label for="f8">Price ($US)</label><input type="number" name="priceUs"
+                                                <label for="f8">Price ($US)</label><input type="number"
+                                                                                          name="priceUs"
                                                                                           class="form-control"
                                                                                           id="f8"
-                                                                                          th:attr="value=*{priceUs}"
-                                                                                          th:value="*{priceUs}"
+                                                                                          th:value="${flight.priceUs}"
                                                                                           required>
                                             </div>
+                                            <div class="form-group my-1">
+                                                <label for="f9">Status</label><input type="text" name="flightStatus"
+                                                                                     class="form-control"
+                                                                                     id="f9"
+                                                                                     th:value="${flight.flightStatus}"
+                                                                                     required>
+                                            </div>
+
+
                                         </form>
 
 
@@ -236,7 +275,7 @@
                                         <button type="button" class="btn btn-primary"
                                                 data-dismiss="modal">Discard
                                         </button>
-                                        <button type="submit" class="btn btn-primary">Save
+                                        <button form="editFlightForm" type="submit" class="btn btn-primary">Save
                                         </button>
                                     </div>
                                 </div>
@@ -256,26 +295,16 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <h3 class="text-danger font-weight-bold"
-                                            th:value="'Are you sure you want to delete Flight Number: ' + ${flight.flightNumber}"></h3>
-                                        <form id="deleteForm" type="hidden"
-                                              th:object="${flight}"
-                                              th:action="@{/administrator/flight-schedule-delete}" method="post">
-                                            <input type="hidden" th:value="*{flightId}" name="flightId"/>
-                                            <input type="hidden" th:value="*{flightNumber}" name="flightNumber"/>
-                                            <input type="hidden" th:value="*{carrier}" name="carrier"/>
-                                            <input type="hidden" th:value="*{departureDate}" name="departureDate"/>
-                                            <input type="hidden" th:value="*{originCity}" name="originCity"/>
-                                            <input type="hidden" th:value="*{destinationCity}" name="destinationCity"/>
-                                            <input type="hidden" th:value="*{departureTime}" name="departureTime"/>
-                                            <input type="hidden" th:value="*{arrivalTime}" name="arrivalTime"/>
-                                            <input type="hidden" th:value="*{priceUs}" name="priceUs"/>
-                                        </form>
+                                        <p style="font-size: 1.1rem" class="font-weight-bold"
+                                           th:text="'Are you sure you want to delete Flight with Flight_Number: ' + ${flight.flightNumber} +
+                                                   ', Carrier: ' + ${flight.carrier} + '. Departure Date: ' + ${flight.departureDate} +
+                                                    ', Origin City: ' + ${flight.originCity} + '?'"></p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Don't Delete
                                         </button>
-                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                        <a type="button" th:href="'/admin-api/v1/delete-flight/' + ${flight.flightId}"
+                                           class="btn btn-primary delete--button">Delete</a>
                                     </div>
                                 </div>
                             </div>
@@ -307,7 +336,9 @@
             "lengthMenu": [10, 25, 50, 75, 100],
             "search": true,
         });
+
     });
+
 </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.application.service;
 
+import com.application.common.Const;
 import com.application.entity.Reservation;
 import com.application.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setFlightId(flightId);
         reservation.setUserId(email);
+        reservation.setStatus(Const.STATUS_ON_TIME);
         return reservationRepository.saveAndFlush(reservation);
     }
 }
