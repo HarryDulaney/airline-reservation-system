@@ -1,17 +1,17 @@
 package com.application.controller;
 
 import com.application.entity.Flight;
-import com.application.model.NotificationMessage;
 import com.application.service.FlightService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,12 +31,10 @@ public class FlightController {
     @GetMapping(path = "/searchFlights")
     public String searchAvailableFlights(@AuthenticationPrincipal OidcUser oidcUser,
                                          Model model) {
-        List<Flight> flights = flightService.getAvailableFlights(oidcUser.getEmail());
-        model.addAttribute("resultFlights", flights);
         return "searchFlights";
     }
 
-    @PreAuthorize("hasAuthority('admins')")
+    @PreAuthorize("hasAuthority('users')")
     @ModelAttribute("flights")
     public void flights(Model model) {
         model.addAttribute("flights", flightService.getAllFlights());
@@ -74,11 +72,12 @@ public class FlightController {
                                   RedirectAttributes redirAttrs,
                                   ModelAndView mav) {
 
-//        if (bindingResult.hasErrors()) {
-//            mav.setViewName("/admin/flightSchedule");
-//            mav.addObject("addFlightResult", bindingResult.getFieldErrors());
-//            return mav;
-//        }
+        if (bindingResult.hasErrors()) {
+            redirAttrs.addFlashAttribute("error", "Please clear all errors before adding a new flight..");
+            mav.setViewName("/admin/flightSchedule");
+            mav.addObject("addFlightResult", bindingResult.getFieldErrors());
+            return mav;
+        }
 
         flightService.addFlight(newFlight);
         mav.setViewName("redirect:/admin/flightSchedule");

@@ -33,10 +33,10 @@
             <div class="display-5 fw-bolder text-white mb-2" th:each="m : ${messages}">
                 <span th:text="${m}"></span>
             </div>
-            <p>Exception:</p>
+            <p class="display-5 fw-bolder text-white mb-2">Exception:</p>
             <div class="display-5 fw-bolder text-white mb-2">
                 <!--/*@thymesVar id="exception" type="com.application.exceptions.GlobalExceptionHandler"*/-->
-                <span th:text="${exception}"></span>
+                <span class="display-5 text-white font-weight-bold mb-2" th:text="${exception}"></span>
             </div>
         </div>
     </div>
