@@ -1,0 +1,66 @@
+<form method="post" action="#" id="editFlightForm"
+      th:action="@{/admin-api/v1/save-flight}" th:object="${editFlight}">
+    <input type="hidden" name="flightId" class="form-control"
+           id="editFlightId"
+           th:value="${editFlight.flightId}"/>
+    <div class="form-group my-1">
+        <label for="editFlightNumber">Flight Number</label><input type="text" name="flightNumber" class="form-control"
+                                                                  id="editFlightNumber"
+                                                                  th:value="${editFlight.flightNumber}"
+                                                                  placeholder="Ex: W3Y7"
+                                                                  required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightCarrier">Carrier Airline</label><input type="text" name="carrier" class="form-control"
+                                                                     id="editFlightCarrier"
+                                                                     placeholder="Ex: Delta"
+                                                                     th:value="${editFlight.carrier}"
+                                                                     required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightDepartureDate">Departure Date</label><input type="date" name="departureDate"
+                                                                          class="form-control" id="editFlightDepartureDate"
+                                                                          th:value="${editFlight.departureDate}"
+                                                                          required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightOrigin">Origin City</label><input type="text" name="originCity" class="form-control"
+                                                                id="editFlightOrigin"
+                                                                th:value="${editFlight.originCity}"
+                                                                required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightDestination">Destination City</label><input type="text" name="destinationCity"
+                                                                          class="form-control" id="editFlightDestination"
+                                                                          th:value="${editFlight.destinationCity}"
+                                                                          required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightDepartTime">Departure Time</label><input type="time" name="departureTime"
+                                                                       class="form-control" id="editFlightDepartTime"
+                                                                       th:value="${editFlight.departureTime}"
+                                                                       required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightArriveTime">Arrival Time</label><input type="time" name="arrivalTime" class="form-control"
+                                                                     id="editFlightArriveTime"
+                                                                     th:value="${editFlight.arrivalTime}"
+                                                                     required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightPrice">Price ($US)</label><input type="number" step="0.01" name="priceUs"
+                                                               class="form-control"
+                                                               id="editFlightPrice"
+                                                               th:value="${editFlight.priceUs}"
+                                                               placeholder="Ex: 555.55"
+                                                               required>
+    </div>
+    <div class="form-group my-1">
+        <label for="editFlightStatus">Status</label><input type="text" name="flightStatus"
+                                                           class="form-control"
+                                                           id="editFlightStatus"
+                                                           th:value="${editFlight.flightStatus}"
+                                                           placeholder="Ex: OnTime"
+                                                           required>
+    </div>
+</form>
