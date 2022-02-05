@@ -64,120 +64,21 @@
         </div>
     </div>
 </header>
-<!-- Account types and registration section-->
-<section class="bg-light py-5 border-bottom">
-    <div class="container px-5 my-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bolder">New User Registration</h2>
-            <p class="lead mb-0">Claim your free account</p>
-        </div>
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6 col-xl-4">
-                <div class="card mb-5 mb-xl-0">
-                    <div class="card-body p-5">
-                        <div class="text-uppercase fw-bold text-muted"><strong>User Account</strong></div>
-                        <div class="mb-3">
-                            <span class="display-4 fw-bold">Free</span>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                <strong>Manager your booked flights</strong>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Search and book new flights
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Get access to My Trips
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Edit existing bookings and flights
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                <strong>Only one account per email address</strong>
-                            </li>
-                        </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" th:href="@{/register}">Register User
-                            Account</a></div>
-                    </div>
-                </div>
-            </div>
+<!-------------------------------------------- Home page contents -------------------------------------------->
+<div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <section th:replace="fragments/components :: signedOutContents"></section>
+</div>
 
-            <div class="col-lg-6 col-xl-4">
-                <div class="card">
-                    <div class="card-body p-5">
-                        <div class="text-uppercase fw-bold text-muted"><strong>Admin Account</strong></div>
-                        <div class="mb-3">
-                            <span class="display-4 fw-bold">Approval Required</span>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                <strong>Manage Users</strong>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Add new flights
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Edit existing flights
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Delete existing flights
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Update existing flight information
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Gain insight into your users
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Only one account per Admin
-                            </li>
-                        </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Request Admin Credentials</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 col-xl-4">
-                <div class="card">
-                    <div class="card-body p-5">
-                        <div class="text-uppercase fw-bold text-muted"><strong>Anonymous Access</strong></div>
-                        <div class="mb-3">
-                            <span class="display-4 fw-bold" style="font-size: 2.5rem;">Federated sign in via third party provider</span>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                <strong>Use a third party SSO provider</strong>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Coming Soon!
-                            </li>
-                        </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="#!" disabled="">Coming
-                            Soon!</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <div sec:authorize="hasAuthority('admins')">
+        <section th:replace="fragments/components :: signedInContentsAdmin"></section>
     </div>
-</section>
+    <div sec:authorize-expr="!hasAuthority('admins')">
+        <section th:replace="fragments/components :: signedInContentsUser"></section>
+
+    </div>
+</div>
+
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
 

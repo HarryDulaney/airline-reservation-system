@@ -18,6 +18,12 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
           crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"
+          crossorigin="anonymous">
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/icon/favicon.ico">
 </head>
@@ -29,31 +35,30 @@
             <li class="nav-item">
                 <a class="nav-link text-primary font-weight-bold" th:href="@{/reservations}">MY TRIPS</a>
             </li>
-            <li class="nav-item"><a class="nav-link text-primary font-weight-bold" th:href="@{/searchFlights/}">BOOK
+            <li class="nav-item"><a class="nav-link text-primary font-weight-bold" th:href="@{/searchFlights}">BOOK
                 FLIGHTS</a>
             </li>
-
             <!-------------------------------------------------- ADMIN ONLY NAV DROPDOWN -------------------------------------------------->
             <li class="nav-item dropdown" sec:authorize="hasAuthority('admins')">
-                <a class="nav-link dropdown-toggle text-danger font-weight-bold" href="#" id="navbarDropdown"
+                <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="navbarDropdown"
                    role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     ADMIN
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a th:href="@{/admin/flightSchedule}" class="dropdown-item">Edit Flight Schedules</a>
-                    <a class="dropdown-item" href="#">Add Flights</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Admin Actions</a>
+                <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                    <!--                    <a class="dropdown-item" href="#">Action</a>-->
+                    <a th:href="@{/admin/flightSchedule}" class="dropdown-item text-white"><i
+                            class="bi bi-pencil-fill"></i> Edit Flight Schedules</a>
+                    <!--                    <a class="dropdown-item" href="#">Action</a>-->
+                    <!--                    <div class="dropdown-divider"></div>-->
+                    <!--                    <a class="dropdown-item" href="#">Action/a>-->
                 </div>
             </li>
             <!-------------------------------------------------- ADMIN AUTHORITY ONLY END -------------------------------------------------->
         </ul>
     </div>
     <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto text-white font-weight-bold" th:href="@{/}"> <i
-                class="bi bi-house"></i>
+        <a class="navbar-brand mx-auto text-white font-weight-bold" th:href="@{/}"> <i class="bi bi-house"></i>
             Simulation Airlines</a>
         <button class="navbar-toggler mx-sm-1" type="button" data-toggle="collapse" data-target=".dual-collapse2">
             <span class="navbar-toggler-icon"></span>
@@ -123,6 +128,355 @@
 </nav>
 
 
+<!-------------------------------------------------- Signed Out Cards -------------------------------------------------->
+<section class="bg-light py-5 border-bottom" th:fragment="signedOutContents">
+    <div class="container px-5 my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder">New User Registration</h2>
+            <p class="lead mb-0">Claim your free account</p>
+        </div>
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5 mb-xl-0">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>User Account</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">Free</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Manager your booked flights</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Search and book new flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Get access to My Trips
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Edit existing bookings and flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Only one account per email address</strong>
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary" th:href="@{/register}">Register User
+                            Account</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Admin Account</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">Approval Required</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong> Add new flights
+                                </strong>
+                            </li>
+
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Edit existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Delete existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Update existing flight information
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Gain insight into your users
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Only one account per Admin
+                            </li>
+                        </ul>
+                        <div class="d-grid">
+                            <a class="btn btn-outline-primary disabled" href="!#" disabled>You must be a registered User
+                                to request Admin privilege</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Anonymous Access</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold" style="font-size: 2.5rem;">Federated sign in via third party provider</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Use a third party SSO provider</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Coming Soon!
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="#!" disabled="">Coming
+                            Soon!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+<!-------------------------------------------------- Signed In Cards User -------------------------------------------------->
+<section class="bg-light py-5 border-bottom" th:fragment="signedInContentsUser">
+    <div class="container px-5 my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder">User Account Options and More</h2>
+            <p class="lead mb-0">Do more with your Sim Air flight options</p>
+        </div>
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5 mb-xl-0">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Frequently Asked Questions</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">FAQs</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Learn about your account benefits
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Maximize the value you get with Sim Air
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Discuss what makes Air Sim exceptional</strong>
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="!#">FAQs</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Admin Account</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">Approval Required</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong> Add new flights
+                                </strong>
+                            </li>
+
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Edit existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Delete existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Update existing flight information
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Gain insight into your users
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Only one account per Admin
+                            </li>
+                        </ul>
+
+                        <div class="d-grid">
+                            <a class="btn btn-outline-primary disabled" th:href="@{/requestAdmin}" th:disabled>Coming
+                                Soon! Please contact project Admin through the GitHub Page</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Register with existing accounts</strong>
+                        </div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold" style="font-size: 2.5rem;">Federated sign in via third party provider</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Use a third party SSO provider</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Coming Soon!
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="#!" disabled="">Coming
+                            Soon!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<!-------------------------------------------------- Signed In Cards Admin -------------------------------------------------->
+<section class="bg-light py-5 border-bottom" th:fragment="signedInContentsAdmin">
+    <div class="container px-5 my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder">Admin Account Options and More</h2>
+            <p class="lead mb-0">Administration Links</p>
+        </div>
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Admin Help Desk</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">Get Help</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Learn about your account benefits
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Maximize the value you get with Sim Air
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Discuss what makes Air Sim exceptional</strong>
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="!#">FAQs</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>Option LInk</strong></div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">Info On LInk</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong> Add new flights
+                                </strong>
+                            </li>
+
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Edit existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Delete existing flights
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Update existing flight information
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Gain insight into your users
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Only one account per Admin
+                            </li>
+                        </ul>
+
+                        <a class="btn btn-outline-primary disabled" th:href="@{/}" th:disabled>Coming
+                            Soon!</a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-uppercase fw-bold text-muted"><strong>affsdaafsd</strong>
+                        </div>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold" style="font-size: 2.5rem;">Admin LInk Options Here</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                <strong>Use a third party SSO provider</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Coming Soon!
+                            </li>
+                        </ul>
+                        <div class="d-grid"><a class="btn btn-outline-primary disabled" href="#!" disabled="">Coming
+                            Soon!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-------------------------------------------------- Edit Flight Modal -------------------------------------------------->
+
+<!-- Edit Flight Modal -->
+<div th:fragment="editModal" class="modal fade" id="editFlightModal" th:id="editFlightModal" tabindex="-1" role="dialog" aria-labelledby="editModalLbl"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLbl">Edit Flight</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-------------------------------------------------- FOOTER -------------------------------------------------->
 <footer style="bottom: 0" class="align-bottom p-2" th:fragment="footer">
     <div class="container" th:align="center">
@@ -137,8 +491,6 @@
 
 <!-------------------------------------------------- JAVASCRIPT GLOBAL -------------------------------------------------->
 <div th:fragment="jsScripts">
-    <script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.9.0/js/okta-sign-in.min.js"
-            type="text/javascript"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
             integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
@@ -146,7 +498,13 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"
+            crossorigin="anonymous"></script>
+
+
 </div>
 </html>

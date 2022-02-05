@@ -2,14 +2,14 @@ package com.application.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.lang.Long;
+import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "flight_tbl")
@@ -20,6 +20,8 @@ public class Flight {
     @Column(name = "flight_id")
     private Long flightId;
 
+    @Min(4)
+    @Max(4)
     @Column(name = "flight_num")
     private String flightNumber;
 
@@ -46,8 +48,12 @@ public class Flight {
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Collection<Reservation> reservations;
+    @Column(name = "status")
+    private String flightStatus;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", referencedColumnName = "flight_id")
+    private List<Reservation> reservations;
 
     public Flight() {
     }
@@ -60,7 +66,8 @@ public class Flight {
                   BigDecimal priceUs,
                   String carrier,
                   LocalTime departureTime,
-                  LocalTime arrivalTime) {
+                  LocalTime arrivalTime,
+                  String flightStatus) {
         this.flightId = flightId;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
@@ -70,12 +77,13 @@ public class Flight {
         this.carrier = carrier;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.flightStatus = flightStatus;
     }
 
-    public Collection<Reservation> getReservations() {
+
+    public List<Reservation> getReservations() {
         return reservations;
     }
-
 
     public LocalTime getArrivalTime() {
         return arrivalTime;
@@ -102,7 +110,7 @@ public class Flight {
     }
 
 
-    public void setReservations(Collection<Reservation> reservations) {
+    public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 
@@ -152,6 +160,14 @@ public class Flight {
 
     public void setPriceUs(BigDecimal priceUs) {
         this.priceUs = priceUs;
+    }
+
+    public String getFlightStatus() {
+        return flightStatus;
+    }
+
+    public void setFlightStatus(String flightStatus) {
+        this.flightStatus = flightStatus;
     }
 
     @Override

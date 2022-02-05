@@ -18,7 +18,6 @@
 </div>
 
 
-
 <header class="bg-dark py-2">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
@@ -29,44 +28,68 @@
     </div>
 </header>
 <div class="container my-5">
-    <div class="table-responsive">
-        <table id="reservationTable" class="table">
-            <thead>
-            <tr class="bg-info">
-                <th>Reservation #</th>
-                <th>Flight #</th>
-                <th>Departure Date</th>
-                <th>Departure Time</th>
-                <th>Arrival Time</th>
-                <th>Carrier</th>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Total Cost</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="reservation : ${allReservations}">
-                <td th:text="${reservation.reservationId}"></td>
-                <td th:text="${reservation.flight.flightNumber}"></td>
-                <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
-                <td th:text="${#temporals.format(reservation.flight.departureTime,'HH:mm')}"></td>
-                <td th:text="${#temporals.format(reservation.flight.arrivalTime,'HH:mm')}"></td>
-                <td th:text="${reservation.flight.carrier}"></td>
-                <td th:text="${reservation.flight.originCity}"></td>
-                <td th:text="${reservation.flight.destinationCity}"></td>
-                <td th:text="${'$' + #numbers.formatDecimal(reservation.flight.priceUs, 1, 2)}"></td>
+    <div class="row justify-content-center">
+        <div class="table-responsive">
+            <table id="reservationTable" class="table">
+                <thead>
+                <tr class="bg-primary">
+                    <th>Current Status</th>
+                    <th>Reservation #</th>
+                    <th>Flight #</th>
+                    <th>Departure Date</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Carrier</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Total Cost</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reservation : ${allReservations}">
+                    <td th:text="${reservation.status}"></td>
+                    <td th:text="${reservation.reservationId}"></td>
+                    <td th:text="${reservation.flight.flightNumber}"></td>
+                    <td th:text="${#dates.format(reservation.flight.departureDate, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${#temporals.format(reservation.flight.departureTime,'HH:mm')}"></td>
+                    <td th:text="${#temporals.format(reservation.flight.arrivalTime,'HH:mm')}"></td>
+                    <td th:text="${reservation.flight.carrier}"></td>
+                    <td th:text="${reservation.flight.originCity}"></td>
+                    <td th:text="${reservation.flight.destinationCity}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(reservation.flight.priceUs, 1, 2)}"></td>
 
-                <td class="mx-auto"><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">
-                    <i class="bi bi-x-circle-fill"><span class="text-secondary text-muted small"> Delete</span></i></a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <td class="mx-auto"><a th:href="'/reservation/delete/'  + ${reservation.reservationId}">
+                        <i class="bi bi-x-circle-fill"><span class="text-secondary text-muted small"> Delete</span></i></a>
+                    </td>
+                </tr>
+
+                <tr th:if="${allReservations.isEmpty()}">
+                    <td class="text-center" colspan="8">Reservations will appear here...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#reservationTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)',
+            },
+            responsive: true,
+            "ordering": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+            "search": true,
 
+        });
+    });
+</script>
 </body>
 </html>

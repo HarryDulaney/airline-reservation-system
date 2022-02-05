@@ -34,7 +34,7 @@
         <div class="table-responsive">
             <table id="flightTable" class="table">
                 <thead>
-                <tr class="bg-info">
+                <tr class="bg-primary">
                     <th>Flight #</th>
                     <th>Departure Date</th>
                     <th>Carrier</th>
@@ -47,7 +47,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="flight : ${resultFlights}">
+                <tr th:each="flight : ${flights}">
                     <td th:text="${flight.flightNumber}"></td>
                     <td th:text="${#dates.format(flight.departureDate, 'dd-MMM-yyyy')}"></td>
                     <td th:text="${flight.carrier}"></td>
@@ -70,12 +70,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#flightTable').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
+            responsive: true,
             "ordering": true,
             "pageLength": 10,
             "lengthChange": true,
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
-            "search": true
+            "search": true,
         });
     });
 </script>
