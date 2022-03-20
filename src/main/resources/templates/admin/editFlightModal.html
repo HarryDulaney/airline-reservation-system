@@ -1,5 +1,4 @@
-<th:block th:object="${editFlight}">
-    <div class="modal-header">
+ <div class="modal-header">
         <h5 class="modal-title" id="editModalLbl">Edit Flight</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -8,7 +7,7 @@
     <div class="modal-body">
         <form method="post" action="#" id="editFlightForm"
               th:action="@{/admin-api/v1/save-flight}" th:object="${editFlight}">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<!--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <input type="hidden" name="flightId" class="form-control"
                    id="editFlightId"
                    th:value="${editFlight.flightId}"/>
@@ -85,4 +84,3 @@
         <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
         <button class="btn btn-primary" form="editFlightForm" type="submit">Save changes</button>
     </div>
-</th:block>
