@@ -32,7 +32,7 @@
     </div>
 </div>
 
-    <div class="alert alert-danger" id="errorAlert" role="alert" th:if="${error}">
+<div class="alert alert-danger" id="errorAlert" role="alert" th:if="${error}">
     <div class="row">
         <div th:text="${error}" class="font-weight-bold"></div>
         <div class="alert-dismissible">
@@ -61,18 +61,6 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLbl">Edit Flight</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
         </div>
     </div>
 </div>
@@ -240,7 +228,7 @@
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
-<script type="text/javascript">
+<script th:inline="javascript">
     $(document).ready(function () {
         $('#flightTable').DataTable({
             rowReorder: {
@@ -265,7 +253,7 @@
         $('#editFlightModal').on('show.bs.modal', function (e) {
             let flightId = $(e.relatedTarget).data('flight-id')
             $.get("/admin-api/v1/search-flight?op=edit&id=" + flightId, function (data) {
-                $('#editFlightModal').find('.modal-body').html(data);
+                $('#editFlightModal').find('.modal-content').html(data);
             });
         });
 

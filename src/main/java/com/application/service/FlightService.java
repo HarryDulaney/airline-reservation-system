@@ -54,9 +54,6 @@ public class FlightService {
 
     public Flight saveFlight(Flight flight) {
         List<Reservation> reservations = flight.getReservations();
-        for (Reservation reservation: reservations) {
-
-        }
         return flightRepository.saveAndFlush(flight);
     }
 

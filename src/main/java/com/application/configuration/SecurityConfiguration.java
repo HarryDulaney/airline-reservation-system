@@ -12,17 +12,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requiresChannel().requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-                .requiresSecure()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/", "/register").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/", "/register","/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login().defaultSuccessUrl("/", true)
                 .and()
-                .logout()
-                .logoutSuccessUrl("/");
-
+                .formLogin()
+                .and()
+                .logout();
     }
 }
