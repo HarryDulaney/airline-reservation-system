@@ -11,10 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .authorizeRequests()
-                .antMatchers("/", "/register", "/login").permitAll()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/", "/register","/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login().defaultSuccessUrl("/", true)
@@ -22,7 +21,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .logout();
-
-
     }
 }
