@@ -78,6 +78,11 @@ public class MainViewController {
         return mav;
     }
 
+    @GetMapping("/login?")
+    public ModelAndView loginMan(HttpServletRequest request) throws MalformedURLException {
+        return login(request);
+    }
+
     @GetMapping("/authorization-code/callback")
     public String authCallback(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         model.addAttribute("user", oidcUser);
