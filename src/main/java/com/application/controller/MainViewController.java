@@ -20,8 +20,6 @@ public class MainViewController {
     private String registerUrl;
 
 
-    @Value(value = "${okta.base.url}")
-    private String baseUrl;
 
     private static final String STATE = "state";
     private static final String NONCE = "nonce";
@@ -55,10 +53,7 @@ public class MainViewController {
     public ModelAndView login(HttpServletRequest request) throws MalformedURLException {
 
         ModelAndView mav = new ModelAndView("login");
-        mav.addObject("issuerUri", oktaOAuth2Properties.getIssuer());
         mav.addObject("scopes", oktaOAuth2Properties.getScopes());
-        mav.addObject("signInLogoPath", "/img/AirSimLogo.png");
-        mav.addObject("oktaBaseUrl", baseUrl);
         mav.addObject("oktaClientId", oktaOAuth2Properties.getClientId());
         mav.addObject("redirectUri",
                 request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() +

@@ -20,7 +20,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/", true)
+                .loginPage("/login")
+                .defaultSuccessUrl("/authorization-code/callback", true)
                 .and()
                 .logout();
     }
