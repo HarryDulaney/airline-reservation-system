@@ -17,7 +17,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/register", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .csrf().disable()
                 .oauth2Login().defaultSuccessUrl("/", true)
                 .and()
                 .formLogin()
