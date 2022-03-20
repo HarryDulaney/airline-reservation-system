@@ -16,14 +16,14 @@
     /*<![CDATA[*/
     var config = {};
 
-    config.baseUrl = /*[[${oktaBaseUrl}]]*/ '';
+    config.baseUrl = 'https://dev-5895161.okta.com';
     config.clientId = /*[[${oktaClientId}]]*/ '';
     config.redirectUri = /*[[${redirectUri}]]*/ '';
     config.logo =
         'https://raw.githubusercontent.com/HarryDulaney/airline-reservation-system/master/src/main/resources/img/transparent-bg-airplane.png';
     config.logoText = 'Airline Reservation System';
     config.authParams = {
-        issuer: /*[[${issuerUri}]]*/ '',
+        issuer: 'https://dev-5895161.okta.com/oauth2/default',
         responseType: 'code',
         pkce: false,
         scopes: /*[[${scopes}]]*/ '',
