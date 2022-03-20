@@ -12,6 +12,7 @@
 <div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
     <nav th:replace="fragments/components :: signedIn">
     </nav>
+
 </div>
 
 <!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
@@ -80,6 +81,5 @@
 
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
-
 </body>
 </html>
