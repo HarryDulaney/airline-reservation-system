@@ -7,12 +7,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 
 @Controller
@@ -23,17 +21,10 @@ public class MainViewController {
 
 
     @Value(value = "${okta.base.url}")
-    private String oktaBaseUrl;
+    private String baseUrl;
 
     private static final String STATE = "state";
     private static final String NONCE = "nonce";
-    private static final String SCOPES = "scopes";
-    private static final String OKTA_BASE_URL = "oktaBaseUrl";
-    private static final String OKTA_CLIENT_ID = "oktaClientId";
-    private static final String REDIRECT_URI = "redirectUri";
-    private static final String ISSUER_URI = "issuerUri";
-    private static final String LOGO = "signInLogoPath";
-
 
     private final OktaOAuth2Properties oktaOAuth2Properties;
 
@@ -63,17 +54,16 @@ public class MainViewController {
     @GetMapping("/login")
     public ModelAndView login(HttpServletRequest request) throws MalformedURLException {
 
-        String issuer = oktaOAuth2Properties.getIssuer();
         ModelAndView mav = new ModelAndView("login");
-        mav.addObject(SCOPES, oktaOAuth2Properties.getScopes());
-        mav.addObject(LOGO, "/img/AirSimLogo.png");
-        mav.addObject(OKTA_BASE_URL, oktaBaseUrl);
-        mav.addObject(OKTA_CLIENT_ID, oktaOAuth2Properties.getClientId());
-        mav.addObject(REDIRECT_URI,
+        mav.addObject("issuerUri", oktaOAuth2Properties.getIssuer());
+        mav.addObject("scopes", oktaOAuth2Properties.getScopes());
+        mav.addObject("signInLogoPath", "/img/AirSimLogo.png");
+        mav.addObject("oktaBaseUrl", baseUrl);
+        mav.addObject("oktaClientId", oktaOAuth2Properties.getClientId());
+        mav.addObject("redirectUri",
                 request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() +
                         request.getContextPath() + "/authorization-code/callback"
         );
-        mav.addObject(ISSUER_URI, issuer);
 
         return mav;
     }
