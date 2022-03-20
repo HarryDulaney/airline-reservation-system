@@ -19,6 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .oauth2Login().defaultSuccessUrl("/", true)
                 .and()
                 .formLogin()
+                .loginPage("/login")
                 .and()
                 .logout();
     }
