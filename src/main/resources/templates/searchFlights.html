@@ -67,7 +67,7 @@
 </div>
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
-<script type="text/javascript">
+<script th:inline="javascript">
     $(document).ready(function () {
         $('#flightTable').DataTable({
             rowReorder: {

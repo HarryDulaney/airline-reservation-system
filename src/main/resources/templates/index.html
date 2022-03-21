@@ -12,6 +12,7 @@
 <div th:if="${#bools.isTrue(#authorization.expression('isAuthenticated()'))}">
     <nav th:replace="fragments/components :: signedIn">
     </nav>
+
 </div>
 
 <!-------------------------------------------------- SIGNED OUT -------------------------------------------------->
@@ -43,11 +44,10 @@
                         <h1 class="display-5 fw-bolder text-white mb-2">Welcome to Simulation Airlines<br></h1>
                         <p class="lead text-white-50 mb-4">Please sign in or register a new account to continue</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                            <form method="get" th:action="@{/oauth2/authorization/okta}">
+                            <form method="get" th:action="@{/login}">
                                 <button id="login-button2"
                                         class="btn btn-warning btn-lg text-white px-4 me-sm-3 mr-1"
-                                        type="submit">Sign
-                                    In
+                                        type="submit">Sign In
                                 </button>
                             </form>
                             <form method="get" th:action="@{/register}">
@@ -81,6 +81,5 @@
 
 <footer th:replace="fragments/components :: footer"></footer>
 <div th:replace="fragments/components :: jsScripts"></div>
-
 </body>
 </html>
