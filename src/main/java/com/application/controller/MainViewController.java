@@ -26,6 +26,11 @@ public class MainViewController {
         return "redirect:" + registerUrl;
     }
 
+    @GetMapping("/faq")
+    public String faq(Model model) {
+        return "faq";
+    }
+
     @GetMapping("/requestAdmin")
     public ModelAndView adminRequestForm(@AuthenticationPrincipal OidcUser oidcUser, ModelAndView mav) {
         mav.setViewName("adminRequest");
