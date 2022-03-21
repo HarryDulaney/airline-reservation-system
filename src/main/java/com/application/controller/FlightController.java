@@ -87,8 +87,8 @@ public class FlightController {
     @PostMapping(path = "/admin-api/v1/save-flight")
     public String editFlight(@ModelAttribute("editFlight") Flight flight, Model model, RedirectAttributes redirAttr) {
         Flight edited = flightService.saveFlight(flight);
-        redirAttr.addFlashAttribute("success", "Flight with flight number: " + edited.getFlightNumber() + " " +
-                "successfully edited and saved");
+        redirAttr.addFlashAttribute("success", " Changes to flight: " + edited.getFlightNumber() + " " +
+                "successfully saved");
         return "redirect:/admin/flightSchedule";
     }
 
