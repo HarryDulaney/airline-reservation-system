@@ -12,18 +12,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .cors().disable()
+        http.requiresChannel().requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/register", "/login").permitAll()
-                .antMatchers("/js/**", "/css/**").permitAll()
+                .antMatchers("/", "/register","/faq").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login()
+                .logout()
+                .logoutSuccessUrl("/")
                 .and()
-                .formLogin()
+                .oauth2Client()
                 .and()
-                .logout();
+                .oauth2Login().defaultSuccessUrl("/", true);
+
     }
 }
