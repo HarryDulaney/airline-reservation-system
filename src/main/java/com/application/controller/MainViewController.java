@@ -42,7 +42,7 @@ public class MainViewController {
         return "redirect:" + registerUrl;
     }
 
-    @GetMapping("/login?logout")
+    @GetMapping("/logout")
     public String logoutSuccess(Model model) {
         // TODO: Logout successful message here.
         return "index";

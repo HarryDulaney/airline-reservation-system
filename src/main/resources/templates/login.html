@@ -14,28 +14,28 @@
 <div th:replace="fragments/components :: jsScripts"></div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var config = {};
-
-    config.baseUrl = 'https://dev-5895161.okta.com';
-    config.clientId = /*[[${oktaClientId}]]*/ '';
-    config.redirectUri = /*[[${redirectUri}]]*/ '';
-    config.logo =
-        'https://raw.githubusercontent.com/HarryDulaney/airline-reservation-system/master/src/main/resources/img/transparent-bg-airplane.png';
-    config.logoText = 'Airline Reservation System';
-    config.authParams = {
-        issuer: 'https://dev-5895161.okta.com/oauth2/default',
-        responseType: 'code',
-        pkce: false,
-        scopes: /*[[${scopes}]]*/ '',
-        display: 'page'
-    };
-
-    new OktaSignIn(config).renderEl(
-        {el: '#sign-in-widget'},
-        function (res) {
-            console.log(res)
+    let cid = /*[[${oktaClientId}]]*/ '';
+    let redirect = /*[[${redirectUri}]]*/ '';
+    let scopes = /*[[${scopes}]]*/ '';
+    var signIn = new OktaSignIn({
+        el: '#sign-in-widget',
+        baseUrl: 'https://dev-5895161.okta.com',
+        clientId: cid,
+        redirectUri: redirect,
+        logo:
+            'https://raw.githubusercontent.com/HarryDulaney/airline-reservation-system/master/src/main/resources/img/transparent-bg-airplane.png',
+        authParams: {
+            issuer: 'https://dev-5895161.okta.com/oauth2/default',
+            pkce: false,
+            responseType: 'code',
+            scopes: scopes
         }
-    );
+    });
+
+    signIn.showSignInAndRedirect().catch(function (error) {
+        console.log('--------------------------->> Error authenticating with Okta: ' + error +
+            ' <<-------------------------------------')
+    });
     /*]]>*/
 </script>
 
