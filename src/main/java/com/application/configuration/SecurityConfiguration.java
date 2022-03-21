@@ -19,10 +19,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login().defaultSuccessUrl("/", true)
-                .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .oauth2Client()
+                .and()
+                .oauth2Login().defaultSuccessUrl("/", true);
 
     }
 }
